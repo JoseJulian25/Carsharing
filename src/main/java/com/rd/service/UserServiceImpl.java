@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,8 +33,9 @@ public class UserServiceImpl implements UserService  {
 
     @Override
     public User findByEmail(String email) {
-        return repository.findByEmail(email);
+        return repository.findByEmail(email).orElseThrow(() -> new RuntimeException("Email doesn't exist: " + email));
     }
+
 
     @Override
     public User saveUser(User user) {

@@ -1,4 +1,4 @@
-package com.rd.repository;
+package com.rd.token;
 
 import com.rd.token.Token;
 import org.springframework.data.jpa.repository.JpaRepository;

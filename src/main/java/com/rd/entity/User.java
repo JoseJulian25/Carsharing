@@ -1,5 +1,9 @@
 package com.rd.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rd.token.Token;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 @Builder
-@Table(name = "_users")
+@Table(name = "_users", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,6 +38,7 @@ public class User implements UserDetails {
     private String lastname;
 
     @NotNull
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dateBirth;
 
     @Email
@@ -41,18 +46,23 @@ public class User implements UserDetails {
 
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d).{8,}$")
     @Column(name = "password")
+    @JsonIgnore
     private String passw;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
     private Address address;
 
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d).{8,}$")
+    @Pattern(regexp = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$")
     private String telephone;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     private Rol rol;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Token> token;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

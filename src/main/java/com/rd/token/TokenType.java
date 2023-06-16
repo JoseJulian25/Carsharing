@@ -1,2 +1,5 @@
-package com.rd.token;public enum TokenType {
+package com.rd.token;
+
+public enum TokenType {
+    BEARER
 }
