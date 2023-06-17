@@ -1,19 +1,18 @@
 package com.rd.service;
 
 
-import com.rd.entity.Rol;
+import com.rd.DTO.UserRegisterDTO;
+import com.rd.entity.Role;
 import com.rd.entity.User;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
     List<User> findAll();
-    List<User> findAllByRol(Rol rol);
-    List<User> findAllByfindAllByAddressCountry(String country);
+    List<User> findAllByRole(Role role);
+    List<User> findAllByAddressCountry(String country);
+    List<User> findAllByCountryAndCity(String country, String city);
     User findByEmail(String email);
-    User saveUser(User user);
     void deleteUserById(Integer id);
-    User updateUser(User user);
-
+    User updateUser(UserRegisterDTO user, Integer id);
 }

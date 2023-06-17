@@ -1,6 +1,5 @@
 package com.rd.jwt;
 
-import com.rd.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

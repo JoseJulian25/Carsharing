@@ -2,10 +2,12 @@ package com.rd.jwt;
 
 import com.rd.DTO.AuthenticationRequest;
 import com.rd.DTO.AuthenticationResponse;
-import com.rd.DTO.RegisterRequest;
-import com.rd.entity.Rol;
+import com.rd.DTO.UserRegisterDTO;
+import com.rd.entity.Address;
+import com.rd.entity.Role;
 import com.rd.entity.User;
-import com.rd.token.TokenRepository;
+import com.rd.repository.AddressRepository;
+import com.rd.repository.TokenRepository;
 import com.rd.repository.UserRepository;
 import com.rd.token.Token;
 import com.rd.token.TokenType;
@@ -14,19 +16,29 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final UserRepository userRepository;
+    private final AddressRepository addressRepository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse register(RegisterRequest request){
+    @Transactional
+    public AuthenticationResponse register(UserRegisterDTO request){
+        Address address = addressRepository.findByCountryCityStreetAndPostalCode(
+                request.getAddress().getCountry(),
+                request.getAddress().getCity(),
+                request.getAddress().getStreet(),
+                request.getAddress().getPostalCode()
+        ).orElseGet(() -> addressRepository.save(request.getAddress()));
+
         User user = User.builder()
                 .name(request.getName())
                 .lastname(request.getLastname())
@@ -34,9 +46,10 @@ public class AuthenticationService {
                 .passw(passwordEncoder.encode(request.getPassword()))
                 .dateBirth(request.getDateBirth())
                 .telephone(request.getTelephone())
-                .rol(Rol.USER)
-                .address(request.getAddress())
+                .role(Role.USER)
+                .address(address)
                 .build();
+
         User savedUser = userRepository.save(user);
         String jwtToken = jwtService.generateToken(user);
         saveUserToken(savedUser, jwtToken);
@@ -47,9 +60,9 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request){
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()
-        ));
+                ));
 
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("Email doesn't exist"));
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("Email doesn't exist: " + request.getEmail()));
         String jwtToken =jwtService.generateToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);

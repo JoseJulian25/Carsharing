@@ -1,6 +1,5 @@
 package com.rd.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rd.token.Token;
@@ -44,9 +43,8 @@ public class User implements UserDetails {
     @Email
     private String email;
 
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d).{8,}$")
+
     @Column(name = "password")
-    @JsonIgnore
     private String passw;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -58,7 +56,7 @@ public class User implements UserDetails {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private Rol rol;
+    private Role role;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
@@ -66,7 +64,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(rol.name()));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override

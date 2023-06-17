@@ -2,47 +2,30 @@ package com.rd.controller;
 
 import com.rd.DTO.AuthenticationRequest;
 import com.rd.DTO.AuthenticationResponse;
-import com.rd.DTO.RegisterRequest;
-import com.rd.entity.User;
+import com.rd.DTO.UserRegisterDTO;
 import com.rd.jwt.AuthenticationService;
-import com.rd.service.UserService;
-import com.rd.service.UserServiceImpl;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class UserController {
+public class AuthenticationController {
     private final AuthenticationService authService;
-    private final UserServiceImpl userService;
 
-    @PostMapping("/auth/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request){
-        return ResponseEntity.ok(authService.register(request));
+    @PostMapping("/register")
+    public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody UserRegisterDTO request) {
+        return new ResponseEntity<>(authService.register(request), HttpStatus.CREATED);
     }
 
-    @PostMapping("/auth/authenticate")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody AuthenticationRequest request){
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(authService.authenticate(request));
-    }
-
-    @GetMapping("/find/{email}")
-    public ResponseEntity<User> findUserByEmail(@PathVariable String email){
-        return new ResponseEntity<>(userService.findByEmail(email), HttpStatus.OK);
-    }
-
-    @GetMapping("/find")
-    public ResponseEntity<List<User>> findAllUSers(){
-        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
-    }
-
-    @GetMapping
-    public String hola(){
-        return "Bienvenido de vuelta";
     }
 }
