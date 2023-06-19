@@ -2,6 +2,7 @@ package com.rd.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rd.enums.Role;
 import com.rd.token.Token;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
