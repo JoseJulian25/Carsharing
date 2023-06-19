@@ -3,7 +3,7 @@ package com.rd.service;
 
 import com.rd.DTO.UserRegisterDTO;
 import com.rd.entity.Address;
-import com.rd.entity.Role;
+import com.rd.enums.Role;
 import com.rd.entity.User;
 import com.rd.exception.DataNotFoundException;
 import com.rd.repository.AddressRepository;
@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service

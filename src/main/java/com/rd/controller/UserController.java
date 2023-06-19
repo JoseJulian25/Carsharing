@@ -1,7 +1,7 @@
 package com.rd.controller;
 
 import com.rd.DTO.UserRegisterDTO;
-import com.rd.entity.Role;
+import com.rd.enums.Role;
 import com.rd.entity.User;
 import com.rd.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;

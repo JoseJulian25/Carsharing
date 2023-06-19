@@ -4,7 +4,7 @@ import com.rd.DTO.AuthenticationRequest;
 import com.rd.DTO.AuthenticationResponse;
 import com.rd.DTO.UserRegisterDTO;
 import com.rd.entity.Address;
-import com.rd.entity.Role;
+import com.rd.enums.Role;
 import com.rd.entity.User;
 import com.rd.repository.AddressRepository;
 import com.rd.repository.TokenRepository;

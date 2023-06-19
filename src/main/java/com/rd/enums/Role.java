@@ -1,3 +1,3 @@
-package com.rd.entity;
+package com.rd.enums;
 
 public enum Role {USER, ADMIN}
