@@ -4,10 +4,13 @@ import com.rd.DTO.VehicleRegisterDTO;
 import com.rd.entity.Vehicle;
 import com.rd.service.VehicleServiceImp;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequestMapping("/api/vehicle")
@@ -19,7 +22,13 @@ public class VehicleController {
     @GetMapping
     public ResponseEntity<Map<String, Object>> findAll(
             @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
-        return ResponseEntity.ok(vehicleService.findAll(page, size));
+       Page<Vehicle> pageVehicle = vehicleService.findAll(page, size);
+        Map<String, Object> response = new HashMap<>();
+        response.put("vehicles", pageVehicle.getContent());
+        response.put("currentPage", pageVehicle.getNumber());
+        response.put("totalItems", pageVehicle.getTotalElements());
+        response.put("totalPages", pageVehicle.getTotalPages());
+        return ResponseEntity.ok(response);
     }
     @PostMapping
     public ResponseEntity<VehicleRegisterDTO> saveVehicle(@RequestBody VehicleRegisterDTO vehicle){

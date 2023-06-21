@@ -14,12 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -28,18 +23,9 @@ public class VehicleServiceImp implements VehicleService{
     private final VehicleServiceHelper vehicleServiceHelper;
 
     @Override
-    public Map<String, Object> findAll(int page, int size) {
+    public Page<Vehicle> findAll(int page, int size) {
         Pageable paging = PageRequest.of(page, size);
-
-        Page<Vehicle> pageVehicle = vehicleRepository.findAll(paging);
-        List<Vehicle> vehicles = pageVehicle.getContent();
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("vehicles", vehicles);
-        response.put("currentPage", pageVehicle.getNumber());
-        response.put("totalItems", pageVehicle.getTotalElements());
-        response.put("totalPages", pageVehicle.getTotalPages());
-        return response;
+        return vehicleRepository.findAll(paging);
     }
 
     @Override
