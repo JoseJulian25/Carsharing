@@ -1,8 +1,11 @@
 package com.rd.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rd.enums.ETypeVehicle;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Table(name = "type_vehicles")
@@ -15,6 +18,7 @@ public class TypeVehicle {
     @Enumerated(EnumType.STRING)
     private ETypeVehicle type;
 
-    @OneToOne(mappedBy = "type")
-    private Vehicle vehicle;
+    @OneToMany(mappedBy = "type")
+    @JsonIgnore
+    private List<Vehicle> vehicle;
 }

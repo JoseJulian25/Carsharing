@@ -1,9 +1,12 @@
 package com.rd.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rd.enums.EStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -12,9 +15,12 @@ public class VehicleStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String status;
-    private Date updateDate;
+    @Enumerated(EnumType.STRING)
+    private EStatus status;
+    private LocalDateTime updateDate;
 
-    @OneToOne(mappedBy = "status")
-    private Vehicle vehicle;
+    @OneToMany(mappedBy = "status")
+    @JsonIgnore
+    private List<Vehicle> vehicle;
+
 }

@@ -1,5 +1,6 @@
 package com.rd.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,8 +15,9 @@ public class Model {
     private Integer id;
     private String name;
 
-    @OneToOne(mappedBy = "model")
-    private Vehicle vehicle;
+    @OneToMany(mappedBy = "model")
+    @JsonIgnore
+    private List<Vehicle> vehicle;
 
     @ManyToOne
     @JoinColumn(name = "make_id", referencedColumnName = "id")

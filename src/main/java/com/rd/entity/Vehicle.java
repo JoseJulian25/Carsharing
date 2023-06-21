@@ -2,9 +2,11 @@ package com.rd.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Table(name = "vehicles")
 @Entity
 @Data
@@ -16,22 +18,22 @@ public class Vehicle {
     private Integer id;
     private String serialNumber;
 
-    @OneToOne
+    @ManyToOne()
     @JoinColumn(name = "make_id", referencedColumnName = "id")
     private Make make;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "model_id", referencedColumnName = "id")
     private Model model;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "type_vehicle_id", referencedColumnName = "id")
     private TypeVehicle type;
 
     private String color;
     private Double price;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "vehicle_status_id", referencedColumnName = "id")
     private VehicleStatus status;
 
