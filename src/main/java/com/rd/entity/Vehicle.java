@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
 @Table(name = "vehicles")
 @Entity
@@ -36,6 +38,8 @@ public class Vehicle {
     @ManyToOne
     @JoinColumn(name = "vehicle_status_id", referencedColumnName = "id")
     private VehicleStatus status;
-
     private String additionalNotes;
+
+    @OneToMany(mappedBy = "vehicle")
+    private List<StatusHistory> statusHistory;
 }

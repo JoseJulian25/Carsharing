@@ -17,10 +17,11 @@ public class VehicleStatus {
     private Integer id;
     @Enumerated(EnumType.STRING)
     private EStatus status;
-    private LocalDateTime updateDate;
 
-    @OneToMany(mappedBy = "status")
-    @JsonIgnore
+    @OneToMany(mappedBy = "status", fetch = FetchType.EAGER)
     private List<Vehicle> vehicle;
+
+    @OneToMany(mappedBy = "vehicleStatus", fetch = FetchType.EAGER)
+    private List<StatusHistory> statusHistories;
 
 }

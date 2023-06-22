@@ -13,8 +13,6 @@ import com.rd.repository.VehicleStatusRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
 @RequiredArgsConstructor
 public class VehicleServiceHelper {
@@ -44,7 +42,6 @@ public class VehicleServiceHelper {
         return vehicleStatusRepository.findByStatus(status).orElseGet(() -> {
             VehicleStatus newVehicleStatus = new VehicleStatus();
             newVehicleStatus.setStatus(status);
-            newVehicleStatus.setUpdateDate(LocalDateTime.now());
             return vehicleStatusRepository.save(newVehicleStatus);
         });
     }
