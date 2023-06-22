@@ -1,6 +1,5 @@
 package com.rd.service;
 
-import com.rd.DTO.UserRegisterDTO;
 import com.rd.DTO.VehicleRegisterDTO;
 import com.rd.entity.*;
 import com.rd.enums.EStatus;
@@ -8,6 +7,7 @@ import com.rd.enums.ETypeVehicle;
 import com.rd.exception.DataNotFoundException;
 import com.rd.repository.*;
 import com.rd.utils.ListValidation;
+import com.rd.utils.VehicleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class VehicleServiceImp implements VehicleService{
+public class VehicleServiceImpl implements VehicleService{
     private final VehicleRepository vehicleRepository;
     private final VehicleServiceHelper vehicleServiceHelper;
 
@@ -72,36 +72,34 @@ public class VehicleServiceImp implements VehicleService{
         VehicleStatus vehicleStatus = vehicleServiceHelper.findOrCreateVehicleStatus(vehicleRegisterDTO.getStatus());
         TypeVehicle typeVehicle = vehicleServiceHelper.findOrCreateTypeVehicle(vehicleRegisterDTO.getType());
 
-        Vehicle vehicle = buildVehicleObject(vehicleRegisterDTO, make, model, vehicleStatus, typeVehicle);
+        Vehicle vehicle = VehicleMapper.buildVehicleObject(vehicleRegisterDTO, make, model, vehicleStatus, typeVehicle);
         vehicleServiceHelper.createStatusHistory(vehicle);
         vehicleRepository.save(vehicle);
-        return vehicleRegisterDTO;
-    }
 
-    public Vehicle buildVehicleObject(VehicleRegisterDTO vehicleRegisterDTO, Make make, Model model, VehicleStatus vehicleStatus, TypeVehicle typeVehicle) {
-        return Vehicle.builder()
-                .serialNumber(vehicleRegisterDTO.getSerialNumber())
-                .make(make)
-                .model(model)
-                .type(typeVehicle)
-                .price(vehicleRegisterDTO.getPrice())
-                .color(vehicleRegisterDTO.getColor())
-                .status(vehicleStatus)
-                .additionalNotes(vehicleRegisterDTO.getAdditionalNotes())
-                .build();
+        return VehicleMapper.buildVehicleRegisterDTO(vehicle);
     }
 
     @Override
-    public Vehicle updateVehicle(VehicleRegisterDTO vehicleRegisterDTO, Integer id) {
+    public VehicleRegisterDTO updateVehicle(VehicleRegisterDTO vehicleRegisterDTO, Integer id) {
         Vehicle existingVehicle = vehicleRepository.findById(id).orElseThrow(() ->
                 new DataNotFoundException("Vehicle not found with id: " + id));
+
         EStatus existingStatus = existingVehicle.getStatus().getStatus();
 
         Make make = vehicleServiceHelper.findOrCreateMake(vehicleRegisterDTO.getMakeName());
         Model model = vehicleServiceHelper.findOrCreateModel(vehicleRegisterDTO.getModelName(), make);
         VehicleStatus vehicleStatus = vehicleServiceHelper.findOrCreateVehicleStatus(vehicleRegisterDTO.getStatus());
         TypeVehicle typeVehicle = vehicleServiceHelper.findOrCreateTypeVehicle(vehicleRegisterDTO.getType());
+        updateVehicleFields(vehicleRegisterDTO, existingVehicle, make, model, vehicleStatus, typeVehicle);
 
+        if(!(vehicleRegisterDTO.getStatus().equals(existingStatus))){
+            vehicleServiceHelper.createStatusHistory(existingVehicle);
+        }
+
+        return VehicleMapper.buildVehicleRegisterDTO(vehicleRepository.save(existingVehicle));
+    }
+
+    private static void updateVehicleFields(VehicleRegisterDTO vehicleRegisterDTO, Vehicle existingVehicle, Make make, Model model, VehicleStatus vehicleStatus, TypeVehicle typeVehicle) {
         existingVehicle.setSerialNumber(vehicleRegisterDTO.getSerialNumber());
         existingVehicle.setMake(make);
         existingVehicle.setModel(model);
@@ -110,10 +108,5 @@ public class VehicleServiceImp implements VehicleService{
         existingVehicle.setPrice(vehicleRegisterDTO.getPrice());
         existingVehicle.setStatus(vehicleStatus);
         existingVehicle.setAdditionalNotes(vehicleRegisterDTO.getAdditionalNotes());
-
-        if(!(vehicleRegisterDTO.getStatus().equals(existingStatus))){
-            vehicleServiceHelper.createStatusHistory(existingVehicle);
-        }
-        return vehicleRepository.save(existingVehicle);
     }
 }
