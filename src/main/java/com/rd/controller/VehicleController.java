@@ -40,4 +40,9 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleService.saveVehicle(vehicle));
     }
 
+    @PutMapping
+    public ResponseEntity<Vehicle> updateVehicle(@RequestBody VehicleRegisterDTO vehicle, @RequestParam Integer id){
+        return ResponseEntity.ok(vehicleService.updateVehicle(vehicle, id));
+    }
+
 }

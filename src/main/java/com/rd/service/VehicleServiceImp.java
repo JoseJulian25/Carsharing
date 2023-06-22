@@ -92,7 +92,25 @@ public class VehicleServiceImp implements VehicleService{
     }
 
     @Override
-    public Vehicle UpdateVehicle(VehicleRegisterDTO vehicle, Integer id) {
+    public Vehicle updateVehicle(VehicleRegisterDTO vehicleRegisterDTO, Integer id) {
+        Vehicle existingVehicle = vehicleRepository.findById(id).orElseThrow(() ->
+                new DataNotFoundException("Vehicle not found with id: " + id));
 
+        Make make = vehicleServiceHelper.findOrCreateMake(vehicleRegisterDTO.getMakeName());
+        Model model = vehicleServiceHelper.findOrCreateModel(vehicleRegisterDTO.getModelName(), make);
+        VehicleStatus vehicleStatus = vehicleServiceHelper.findOrCreateVehicleStatus(vehicleRegisterDTO.getStatus());
+        TypeVehicle typeVehicle = vehicleServiceHelper.findOrCreateTypeVehicle(vehicleRegisterDTO.getType());
+
+        existingVehicle.setSerialNumber(vehicleRegisterDTO.getSerialNumber());
+        existingVehicle.setMake(make);
+        existingVehicle.setModel(model);
+        existingVehicle.setType(typeVehicle);
+        existingVehicle.setColor(vehicleRegisterDTO.getColor());
+        existingVehicle.setPrice(vehicleRegisterDTO.getPrice());
+        existingVehicle.setStatus(vehicleStatus);
+        existingVehicle.setAdditionalNotes(vehicleRegisterDTO.getAdditionalNotes());
+
+        vehicleServiceHelper.createStatusHistory(existingVehicle);
+        return vehicleRepository.save(existingVehicle);
     }
 }
