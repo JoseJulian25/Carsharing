@@ -19,6 +19,6 @@ public interface VehicleService {
     List<Vehicle> findAllByMake(String make);
     VehicleRegisterDTO saveVehicle(VehicleRegisterDTO vehicleRegisterDTO);
     Vehicle findById(Integer id);
-    Vehicle UpdateVehicle(Vehicle vehicle, Integer id);
+    Vehicle UpdateVehicle(VehicleRegisterDTO vehicle, Integer id);
 
 }

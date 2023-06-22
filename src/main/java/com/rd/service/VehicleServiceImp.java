@@ -67,6 +67,7 @@ public class VehicleServiceImp implements VehicleService{
         TypeVehicle typeVehicle = vehicleServiceHelper.findOrCreateTypeVehicle(vehicleRegisterDTO.getType());
 
         Vehicle vehicle = buildVehicleObject(vehicleRegisterDTO, make, model, vehicleStatus, typeVehicle);
+        vehicleServiceHelper.createStatusHistory(vehicle);
         vehicleRepository.save(vehicle);
         return vehicleRegisterDTO;
     }
@@ -86,11 +87,12 @@ public class VehicleServiceImp implements VehicleService{
 
     @Override
     public Vehicle findById(Integer id) {
-        return vehicleRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Vehicle not found with id: " + id));
+        return vehicleRepository.findById(id).orElseThrow(() ->
+                new DataNotFoundException("Vehicle not found with id: " + id));
     }
 
     @Override
-    public Vehicle UpdateVehicle(Vehicle vehicle, Integer id) {
-        return null;
+    public Vehicle UpdateVehicle(VehicleRegisterDTO vehicle, Integer id) {
+
     }
 }
