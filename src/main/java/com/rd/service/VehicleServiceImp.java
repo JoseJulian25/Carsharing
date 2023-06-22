@@ -58,6 +58,12 @@ public class VehicleServiceImp implements VehicleService{
         return ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found with make: " + make);
     }
 
+    @Override
+    public Vehicle findById(Integer id) {
+        return vehicleRepository.findById(id).orElseThrow(() ->
+                new DataNotFoundException("Vehicle not found with id: " + id));
+    }
+
     @Transactional
     @Override
     public VehicleRegisterDTO saveVehicle(VehicleRegisterDTO vehicleRegisterDTO) {
@@ -72,7 +78,7 @@ public class VehicleServiceImp implements VehicleService{
         return vehicleRegisterDTO;
     }
 
-    private Vehicle buildVehicleObject(VehicleRegisterDTO vehicleRegisterDTO, Make make, Model model, VehicleStatus vehicleStatus, TypeVehicle typeVehicle) {
+    public Vehicle buildVehicleObject(VehicleRegisterDTO vehicleRegisterDTO, Make make, Model model, VehicleStatus vehicleStatus, TypeVehicle typeVehicle) {
         return Vehicle.builder()
                 .serialNumber(vehicleRegisterDTO.getSerialNumber())
                 .make(make)
@@ -86,15 +92,10 @@ public class VehicleServiceImp implements VehicleService{
     }
 
     @Override
-    public Vehicle findById(Integer id) {
-        return vehicleRepository.findById(id).orElseThrow(() ->
-                new DataNotFoundException("Vehicle not found with id: " + id));
-    }
-
-    @Override
     public Vehicle updateVehicle(VehicleRegisterDTO vehicleRegisterDTO, Integer id) {
         Vehicle existingVehicle = vehicleRepository.findById(id).orElseThrow(() ->
                 new DataNotFoundException("Vehicle not found with id: " + id));
+        EStatus existingStatus = existingVehicle.getStatus().getStatus();
 
         Make make = vehicleServiceHelper.findOrCreateMake(vehicleRegisterDTO.getMakeName());
         Model model = vehicleServiceHelper.findOrCreateModel(vehicleRegisterDTO.getModelName(), make);
@@ -110,7 +111,9 @@ public class VehicleServiceImp implements VehicleService{
         existingVehicle.setStatus(vehicleStatus);
         existingVehicle.setAdditionalNotes(vehicleRegisterDTO.getAdditionalNotes());
 
-        vehicleServiceHelper.createStatusHistory(existingVehicle);
+        if(!(vehicleRegisterDTO.getStatus().equals(existingStatus))){
+            vehicleServiceHelper.createStatusHistory(existingVehicle);
+        }
         return vehicleRepository.save(existingVehicle);
     }
 }
