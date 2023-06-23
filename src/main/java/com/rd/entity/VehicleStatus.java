@@ -18,10 +18,12 @@ public class VehicleStatus {
     @Enumerated(EnumType.STRING)
     private EStatus status;
 
-    @OneToMany(mappedBy = "status", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "status")
+    @JsonIgnore
     private List<Vehicle> vehicle;
 
-    @OneToMany(mappedBy = "vehicleStatus", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "vehicleStatus")
+    @JsonIgnore
     private List<StatusHistory> statusHistories;
 
 }

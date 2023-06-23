@@ -3,7 +3,7 @@ package com.rd.controller;
 import com.rd.DTO.VehicleRegisterDTO;
 import com.rd.entity.Vehicle;
 import com.rd.enums.EStatus;
-import com.rd.service.VehicleServiceImp;
+import com.rd.service.VehicleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 public class VehicleController {
-    private final VehicleServiceImp vehicleService;
+    private final VehicleServiceImpl vehicleService;
 
     @GetMapping
     public ResponseEntity<Map<String, Object>> findAll(
@@ -41,7 +41,7 @@ public class VehicleController {
     }
 
     @PutMapping
-    public ResponseEntity<Vehicle> updateVehicle(@RequestBody VehicleRegisterDTO vehicle, @RequestParam Integer id){
+    public ResponseEntity<VehicleRegisterDTO> updateVehicle(@RequestBody VehicleRegisterDTO vehicle, @RequestParam Integer id){
         return ResponseEntity.ok(vehicleService.updateVehicle(vehicle, id));
     }
 

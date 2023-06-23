@@ -17,6 +17,7 @@ public class Make {
     private Integer id;
 
     @OneToMany(mappedBy = "make", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Model> modelId;
 
     @NotNull

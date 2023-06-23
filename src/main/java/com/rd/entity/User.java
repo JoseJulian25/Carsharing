@@ -48,7 +48,7 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String passw;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
     private Address address;
 
@@ -60,6 +60,7 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Token> token;
 
     @Override
