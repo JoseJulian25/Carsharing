@@ -23,10 +23,17 @@ public class VehicleServiceImpl implements VehicleService{
     private final VehicleServiceHelper vehicleServiceHelper;
 
     @Override
-    public Page<VehicleDTO> findAll(int page, int size) {
+    public Page<VehicleDTO> findAllPage(int page, int size) {
         Pageable paging = PageRequest.of(page, size);
         Page<Vehicle> vehicles = vehicleRepository.findAll(paging);
         return VehicleMapper.buildPageVehicleDTO(vehicles);
+    }
+
+    @Override
+    public List<VehicleDTO> findAll() {
+        List<Vehicle> vehicles = vehicleRepository.findAll();
+        ListValidation.checkNonEmptyList(vehicles, () -> "Not Found");
+        return VehicleMapper.buildListVehicleDTO(vehicles);
     }
 
     @Override
@@ -51,16 +58,23 @@ public class VehicleServiceImpl implements VehicleService{
     }
 
     @Override
-    public List<VehicleDTO> findAllByMakeColorAndType(String make, String color, ETypeVehicle typeVehicle) {
+    public List<VehicleDTO> findByColorTypeAndMake(String color, ETypeVehicle typeVehicle,String make) {
         List<Vehicle> vehicles = vehicleRepository.findAllByMake_NameAndColorAndType_Type(make, color, typeVehicle);
         ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found wih make: " + make + ", color: " + color + " and type: "+ typeVehicle);
         return VehicleMapper.buildListVehicleDTO(vehicles);
     }
 
     @Override
-    public List<VehicleDTO> findAllByMake(String make) {
+    public List<VehicleDTO> findByMake(String make) {
         List<Vehicle> vehicles = vehicleRepository.findAllByMake_Name(make);
         ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found with make: " + make);
+        return VehicleMapper.buildListVehicleDTO(vehicles);
+    }
+
+    @Override
+    public List<VehicleDTO> findByType(ETypeVehicle typeVehicle) {
+        List<Vehicle> vehicles = vehicleRepository.findAllByType_Type(typeVehicle);
+        ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found with type: " + typeVehicle);
         return VehicleMapper.buildListVehicleDTO(vehicles);
     }
 

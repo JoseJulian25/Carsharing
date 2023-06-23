@@ -20,4 +20,5 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
     List<Vehicle> findAllByMake_NameAndColorAndType_Type(String nameMake, String color, ETypeVehicle typeVehicle);
     List<Vehicle> findAllByMake_Name(String name);
     Optional<Vehicle> findById(Integer id);
+    List<Vehicle> findAllByType_Type(ETypeVehicle typeVehicle);
 }
