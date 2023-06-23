@@ -2,7 +2,7 @@ package com.rd.controller;
 
 import com.rd.DTO.AuthenticationRequest;
 import com.rd.DTO.AuthenticationResponse;
-import com.rd.DTO.UserRegisterDTO;
+import com.rd.DTO.UserDTO;
 import com.rd.jwt.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class AuthenticationController {
     private final AuthenticationService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody UserRegisterDTO request) {
+    public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody UserDTO request) {
         return new ResponseEntity<>(authService.register(request), HttpStatus.CREATED);
     }
 

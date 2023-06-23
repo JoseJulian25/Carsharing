@@ -1,6 +1,6 @@
 package com.rd.controller;
 
-import com.rd.DTO.UserRegisterDTO;
+import com.rd.DTO.UserDTO;
 import com.rd.enums.Role;
 import com.rd.entity.User;
 import com.rd.service.UserServiceImpl;
@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<User> updateUser(@RequestParam Integer id,@RequestBody UserRegisterDTO user){
+    public ResponseEntity<User> updateUser(@RequestParam Integer id,@RequestBody UserDTO user){
         return new ResponseEntity<>(userService.updateUser(user, id), HttpStatus.OK);
     }
 

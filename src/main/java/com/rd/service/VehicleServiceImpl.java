@@ -86,6 +86,7 @@ public class VehicleServiceImpl implements VehicleService{
         return VehicleMapper.buildVehicleDTO(vehicle);
     }
 
+    @Transactional
     @Override
     public VehicleDTO updateVehicle(VehicleDTO vehicleDTO, Integer id) {
         Vehicle existingVehicle = vehicleRepository.findById(id).orElseThrow(() ->

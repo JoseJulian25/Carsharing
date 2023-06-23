@@ -2,7 +2,7 @@ package com.rd.jwt;
 
 import com.rd.DTO.AuthenticationRequest;
 import com.rd.DTO.AuthenticationResponse;
-import com.rd.DTO.UserRegisterDTO;
+import com.rd.DTO.UserDTO;
 import com.rd.entity.Address;
 import com.rd.enums.Role;
 import com.rd.entity.User;
@@ -31,7 +31,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     @Transactional
-    public AuthenticationResponse register(UserRegisterDTO request){
+    public AuthenticationResponse register(UserDTO request){
         Address address = addressRepository.findByCountryCityStreetAndPostalCode(
                 request.getAddress().getCountry(),
                 request.getAddress().getCity(),

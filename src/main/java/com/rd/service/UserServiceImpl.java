@@ -1,7 +1,7 @@
 package com.rd.service;
 
 
-import com.rd.DTO.UserRegisterDTO;
+import com.rd.DTO.UserDTO;
 import com.rd.entity.Address;
 import com.rd.enums.Role;
 import com.rd.entity.User;
@@ -79,18 +79,18 @@ public class UserServiceImpl implements UserService  {
 
     @Transactional
     @Override
-    public User updateUser(UserRegisterDTO userRegisterDTO, Integer userId) {
+    public User updateUser(UserDTO userDTO, Integer userId) {
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new DataNotFoundException("User not found"));
 
-        existingUser.setName(userRegisterDTO.getName());
-        existingUser.setLastname(userRegisterDTO.getLastname());
-        existingUser.setDateBirth(userRegisterDTO.getDateBirth());
-        existingUser.setEmail(userRegisterDTO.getEmail());
-        existingUser.setTelephone(userRegisterDTO.getTelephone());
+        existingUser.setName(userDTO.getName());
+        existingUser.setLastname(userDTO.getLastname());
+        existingUser.setDateBirth(userDTO.getDateBirth());
+        existingUser.setEmail(userDTO.getEmail());
+        existingUser.setTelephone(userDTO.getTelephone());
 
         Address existingAddress = existingUser.getAddress();
-        Address updatedAddress = updateOrCreateAddress(userRegisterDTO.getAddress(), existingAddress);
+        Address updatedAddress = updateOrCreateAddress(userDTO.getAddress(), existingAddress);
         existingUser.setAddress(updatedAddress);
 
         return userRepository.save(existingUser);
