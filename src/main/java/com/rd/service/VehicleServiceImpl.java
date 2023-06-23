@@ -1,6 +1,6 @@
 package com.rd.service;
 
-import com.rd.DTO.VehicleRegisterDTO;
+import com.rd.DTO.VehicleDTO;
 import com.rd.entity.*;
 import com.rd.enums.EStatus;
 import com.rd.enums.ETypeVehicle;
@@ -23,90 +23,97 @@ public class VehicleServiceImpl implements VehicleService{
     private final VehicleServiceHelper vehicleServiceHelper;
 
     @Override
-    public Page<Vehicle> findAll(int page, int size) {
+    public Page<VehicleDTO> findAll(int page, int size) {
         Pageable paging = PageRequest.of(page, size);
-        return vehicleRepository.findAll(paging);
+        Page<Vehicle> vehicles = vehicleRepository.findAll(paging);
+        return VehicleMapper.buildPageVehicleDTO(vehicles);
     }
 
     @Override
-    public List<Vehicle> findByStatus(EStatus status) {
+    public List<VehicleDTO> findByStatus(EStatus status) {
         List<Vehicle> vehicles = vehicleRepository.findByStatus_Status(status);
-        return ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found with status: " + status);
+        ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found with status: " + status);
+        return VehicleMapper.buildListVehicleDTO(vehicles);
     }
 
     @Override
-    public List<Vehicle> findByColor(String color) {
+    public List<VehicleDTO> findByColor(String color) {
         List<Vehicle> vehicles = vehicleRepository.findByColor(color);
-        return ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found with color: " + color);
+        ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found with color: " + color);
+        return VehicleMapper.buildListVehicleDTO(vehicles);
     }
 
     @Override
-    public List<Vehicle> findByColorAndType(String color, ETypeVehicle typeVehicle) {
+    public List<VehicleDTO> findByColorAndType(String color, ETypeVehicle typeVehicle) {
         List<Vehicle> vehicles = vehicleRepository.findByColorAndType_Type(color, typeVehicle);
-        return ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found with color and type: " + color + ", " + typeVehicle );
+        ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found with color and type: " + color + ", " + typeVehicle );
+        return VehicleMapper.buildListVehicleDTO(vehicles);
     }
 
     @Override
-    public List<Vehicle> findAllByMakeColorAndType(String make, String color, ETypeVehicle typeVehicle) {
+    public List<VehicleDTO> findAllByMakeColorAndType(String make, String color, ETypeVehicle typeVehicle) {
         List<Vehicle> vehicles = vehicleRepository.findAllByMake_NameAndColorAndType_Type(make, color, typeVehicle);
-        return ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found wih make: " + make + ", color: " + color + " and type: "+ typeVehicle);
+        ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found wih make: " + make + ", color: " + color + " and type: "+ typeVehicle);
+        return VehicleMapper.buildListVehicleDTO(vehicles);
     }
 
     @Override
-    public List<Vehicle> findAllByMake(String make) {
+    public List<VehicleDTO> findAllByMake(String make) {
         List<Vehicle> vehicles = vehicleRepository.findAllByMake_Name(make);
-        return ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found with make: " + make);
+        ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found with make: " + make);
+        return VehicleMapper.buildListVehicleDTO(vehicles);
     }
 
     @Override
-    public Vehicle findById(Integer id) {
-        return vehicleRepository.findById(id).orElseThrow(() ->
+    public VehicleDTO findById(Integer id) {
+        Vehicle vehicle = vehicleRepository.findById(id).orElseThrow(() ->
                 new DataNotFoundException("Vehicle not found with id: " + id));
+        return VehicleMapper.buildVehicleDTO(vehicle);
     }
 
     @Transactional
     @Override
-    public VehicleRegisterDTO saveVehicle(VehicleRegisterDTO vehicleRegisterDTO) {
-        Make make = vehicleServiceHelper.findOrCreateMake(vehicleRegisterDTO.getMakeName());
-        Model model = vehicleServiceHelper.findOrCreateModel(vehicleRegisterDTO.getModelName(), make);
-        VehicleStatus vehicleStatus = vehicleServiceHelper.findOrCreateVehicleStatus(vehicleRegisterDTO.getStatus());
-        TypeVehicle typeVehicle = vehicleServiceHelper.findOrCreateTypeVehicle(vehicleRegisterDTO.getType());
+    public VehicleDTO saveVehicle(VehicleDTO vehicleDTO) {
+        Make make = vehicleServiceHelper.findOrCreateMake(vehicleDTO.getMakeName());
+        Model model = vehicleServiceHelper.findOrCreateModel(vehicleDTO.getModelName(), make);
+        VehicleStatus vehicleStatus = vehicleServiceHelper.findOrCreateVehicleStatus(vehicleDTO.getStatus());
+        TypeVehicle typeVehicle = vehicleServiceHelper.findOrCreateTypeVehicle(vehicleDTO.getType());
 
-        Vehicle vehicle = VehicleMapper.buildVehicleObject(vehicleRegisterDTO, make, model, vehicleStatus, typeVehicle);
+        Vehicle vehicle = VehicleMapper.buildVehicleObject(vehicleDTO, make, model, vehicleStatus, typeVehicle);
         vehicleServiceHelper.createStatusHistory(vehicle);
         vehicleRepository.save(vehicle);
 
-        return VehicleMapper.buildVehicleRegisterDTO(vehicle);
+        return VehicleMapper.buildVehicleDTO(vehicle);
     }
 
     @Override
-    public VehicleRegisterDTO updateVehicle(VehicleRegisterDTO vehicleRegisterDTO, Integer id) {
+    public VehicleDTO updateVehicle(VehicleDTO vehicleDTO, Integer id) {
         Vehicle existingVehicle = vehicleRepository.findById(id).orElseThrow(() ->
                 new DataNotFoundException("Vehicle not found with id: " + id));
 
         EStatus existingStatus = existingVehicle.getStatus().getStatus();
 
-        Make make = vehicleServiceHelper.findOrCreateMake(vehicleRegisterDTO.getMakeName());
-        Model model = vehicleServiceHelper.findOrCreateModel(vehicleRegisterDTO.getModelName(), make);
-        VehicleStatus vehicleStatus = vehicleServiceHelper.findOrCreateVehicleStatus(vehicleRegisterDTO.getStatus());
-        TypeVehicle typeVehicle = vehicleServiceHelper.findOrCreateTypeVehicle(vehicleRegisterDTO.getType());
-        updateVehicleFields(vehicleRegisterDTO, existingVehicle, make, model, vehicleStatus, typeVehicle);
+        Make make = vehicleServiceHelper.findOrCreateMake(vehicleDTO.getMakeName());
+        Model model = vehicleServiceHelper.findOrCreateModel(vehicleDTO.getModelName(), make);
+        VehicleStatus vehicleStatus = vehicleServiceHelper.findOrCreateVehicleStatus(vehicleDTO.getStatus());
+        TypeVehicle typeVehicle = vehicleServiceHelper.findOrCreateTypeVehicle(vehicleDTO.getType());
+        updateVehicleFields(vehicleDTO, existingVehicle, make, model, vehicleStatus, typeVehicle);
 
-        if(!(vehicleRegisterDTO.getStatus().equals(existingStatus))){
+        if(!(vehicleDTO.getStatus().equals(existingStatus))){
             vehicleServiceHelper.createStatusHistory(existingVehicle);
         }
 
-        return VehicleMapper.buildVehicleRegisterDTO(vehicleRepository.save(existingVehicle));
+        return VehicleMapper.buildVehicleDTO(vehicleRepository.save(existingVehicle));
     }
 
-    private static void updateVehicleFields(VehicleRegisterDTO vehicleRegisterDTO, Vehicle existingVehicle, Make make, Model model, VehicleStatus vehicleStatus, TypeVehicle typeVehicle) {
-        existingVehicle.setSerialNumber(vehicleRegisterDTO.getSerialNumber());
+    private static void updateVehicleFields(VehicleDTO vehicleDTO, Vehicle existingVehicle, Make make, Model model, VehicleStatus vehicleStatus, TypeVehicle typeVehicle) {
+        existingVehicle.setSerialNumber(vehicleDTO.getSerialNumber());
         existingVehicle.setMake(make);
         existingVehicle.setModel(model);
         existingVehicle.setType(typeVehicle);
-        existingVehicle.setColor(vehicleRegisterDTO.getColor());
-        existingVehicle.setPrice(vehicleRegisterDTO.getPrice());
+        existingVehicle.setColor(vehicleDTO.getColor());
+        existingVehicle.setPrice(vehicleDTO.getPrice());
         existingVehicle.setStatus(vehicleStatus);
-        existingVehicle.setAdditionalNotes(vehicleRegisterDTO.getAdditionalNotes());
+        existingVehicle.setAdditionalNotes(vehicleDTO.getAdditionalNotes());
     }
 }

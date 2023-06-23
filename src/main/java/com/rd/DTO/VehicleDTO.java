@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class VehicleRegisterDTO {
+public class VehicleDTO {
     private Integer id;
     private String serialNumber;
     private String makeName;

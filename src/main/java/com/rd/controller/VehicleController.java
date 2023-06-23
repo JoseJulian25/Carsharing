@@ -1,6 +1,6 @@
 package com.rd.controller;
 
-import com.rd.DTO.VehicleRegisterDTO;
+import com.rd.DTO.VehicleDTO;
 import com.rd.entity.Vehicle;
 import com.rd.enums.EStatus;
 import com.rd.service.VehicleServiceImpl;
@@ -36,12 +36,12 @@ public class VehicleController {
     }
 
     @PostMapping
-    public ResponseEntity<VehicleRegisterDTO> saveVehicle(@RequestBody VehicleRegisterDTO vehicle){
+    public ResponseEntity<VehicleDTO> saveVehicle(@RequestBody VehicleDTO vehicle){
         return ResponseEntity.ok(vehicleService.saveVehicle(vehicle));
     }
 
     @PutMapping
-    public ResponseEntity<VehicleRegisterDTO> updateVehicle(@RequestBody VehicleRegisterDTO vehicle, @RequestParam Integer id){
+    public ResponseEntity<VehicleDTO> updateVehicle(@RequestBody VehicleDTO vehicle, @RequestParam Integer id){
         return ResponseEntity.ok(vehicleService.updateVehicle(vehicle, id));
     }
 

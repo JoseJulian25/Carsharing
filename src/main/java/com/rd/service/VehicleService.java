@@ -1,24 +1,22 @@
 package com.rd.service;
 
-import com.rd.DTO.VehicleRegisterDTO;
+import com.rd.DTO.VehicleDTO;
 import com.rd.entity.Vehicle;
 import com.rd.enums.EStatus;
 import com.rd.enums.ETypeVehicle;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 public interface VehicleService {
-    Page<Vehicle> findAll(int pageable, int size);
-    List<Vehicle> findByStatus(EStatus status);
-    List<Vehicle> findByColor(String color);
-    List<Vehicle> findByColorAndType(String color, ETypeVehicle typeVehicle);
-    List<Vehicle> findAllByMakeColorAndType(String make, String color, ETypeVehicle typeVehicle );
-    List<Vehicle> findAllByMake(String make);
-    VehicleRegisterDTO saveVehicle(VehicleRegisterDTO vehicleRegisterDTO);
-    Vehicle findById(Integer id);
-    VehicleRegisterDTO updateVehicle(VehicleRegisterDTO vehicle, Integer id);
+    Page<VehicleDTO> findAll(int pageable, int size);
+    List<VehicleDTO> findByStatus(EStatus status);
+    List<VehicleDTO> findByColor(String color);
+    List<VehicleDTO> findByColorAndType(String color, ETypeVehicle typeVehicle);
+    List<VehicleDTO> findAllByMakeColorAndType(String make, String color, ETypeVehicle typeVehicle );
+    List<VehicleDTO> findAllByMake(String make);
+    VehicleDTO saveVehicle(VehicleDTO vehicleDTO);
+    VehicleDTO findById(Integer id);
+    VehicleDTO updateVehicle(VehicleDTO vehicle, Integer id);
 
 }
