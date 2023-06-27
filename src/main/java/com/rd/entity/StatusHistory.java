@@ -27,4 +27,5 @@ public class StatusHistory {
     @JoinColumn(name = "vehicle_status_id", referencedColumnName = "id")
     private VehicleStatus vehicleStatus;
     private LocalDateTime updateDate;
+    private boolean active;
 }

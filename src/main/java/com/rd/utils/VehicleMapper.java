@@ -23,6 +23,7 @@ public class VehicleMapper {
                 .additionalNotes(vehicle.getAdditionalNotes())
                 .build();
     }
+
     public static List<VehicleDTO> buildListVehicleDTO(List<Vehicle> vehicles){
         List<VehicleDTO> vehicleDTOS = new ArrayList<>();
          vehicles.forEach(vehicleDTO -> vehicleDTOS.add(buildVehicleDTO(vehicleDTO)));
@@ -34,7 +35,6 @@ public class VehicleMapper {
         vehicles.forEach( vehicle -> vehicleDTOS.add(buildVehicleDTO(vehicle)));
         return new PageImpl<>(vehicleDTOS, vehicles.getPageable(), vehicles.getTotalElements());
     }
-
 
     public static Vehicle buildVehicleObject(VehicleDTO vehicleDTO, Make make, Model model, VehicleStatus vehicleStatus, TypeVehicle typeVehicle) {
         return Vehicle.builder()

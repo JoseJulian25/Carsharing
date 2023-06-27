@@ -56,7 +56,16 @@ public class VehicleServiceHelper {
                         .vehicle(vehicle)
                         .vehicleStatus(vehicle.getStatus())
                         .updateDate(LocalDateTime.now())
+                        .active(true)
                 .build());
+    }
+
+    public void deactiveLastStatus(Vehicle vehicle){
+        StatusHistory lastActiveHistory = statusHistoryRepository.findTopByVehicleAndActiveOrderByUpdateDateDesc(vehicle, true);
+        if(lastActiveHistory != null){
+            lastActiveHistory.setActive(false);
+            statusHistoryRepository.save(lastActiveHistory);
+        }
     }
 }
 

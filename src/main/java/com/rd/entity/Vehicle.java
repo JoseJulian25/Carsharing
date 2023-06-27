@@ -41,7 +41,7 @@ public class Vehicle {
     private VehicleStatus status;
     private String additionalNotes;
 
-    @OneToMany(mappedBy = "vehicle")
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<StatusHistory> statusHistory;
 }

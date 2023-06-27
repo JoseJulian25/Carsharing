@@ -115,6 +115,7 @@ public class VehicleServiceImpl implements VehicleService{
         updateVehicleFields(vehicleDTO, existingVehicle, make, model, vehicleStatus, typeVehicle);
 
         if(!(vehicleDTO.getStatus().equals(existingStatus))){
+            vehicleServiceHelper.deactiveLastStatus(existingVehicle);
             vehicleServiceHelper.createStatusHistory(existingVehicle);
         }
 
