@@ -95,7 +95,6 @@ public class UserServiceImpl implements UserService  {
 
         return userRepository.save(existingUser);
     }
-
     private Address updateOrCreateAddress(Address newAddress, Address existingAddress) {
         if (existingAddress != null) {
             existingAddress.setCountry(newAddress.getCountry());

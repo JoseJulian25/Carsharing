@@ -132,4 +132,10 @@ public class VehicleServiceImpl implements VehicleService{
         existingVehicle.setStatus(vehicleStatus);
         existingVehicle.setAdditionalNotes(vehicleDTO.getAdditionalNotes());
     }
+
+    @Override
+    public void deleteVehicle(Integer id){
+        Vehicle existingVehicle = vehicleRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Vehicle not found with id: " + id));
+        vehicleRepository.delete(existingVehicle);
+    }
 }

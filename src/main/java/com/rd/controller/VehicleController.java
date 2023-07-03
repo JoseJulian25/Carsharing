@@ -6,6 +6,7 @@ import com.rd.enums.ETypeVehicle;
 import com.rd.service.VehicleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
@@ -77,6 +78,12 @@ public class VehicleController {
     @PutMapping
     public ResponseEntity<VehicleDTO> updateVehicle(@RequestBody VehicleDTO vehicle, @RequestParam Integer id){
         return ResponseEntity.ok(vehicleService.updateVehicle(vehicle, id));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteVehicle(@RequestParam Integer id){
+        vehicleService.deleteVehicle(id);
+        return new ResponseEntity<>("Vehicle eliminated", HttpStatus.OK);
     }
 
 }

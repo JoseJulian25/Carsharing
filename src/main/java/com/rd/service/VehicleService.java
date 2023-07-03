@@ -19,4 +19,5 @@ public interface VehicleService {
     VehicleDTO saveVehicle(VehicleDTO vehicleDTO);
     VehicleDTO findById(Integer id);
     VehicleDTO updateVehicle(VehicleDTO vehicle, Integer id);
+    void deleteVehicle(Integer id);
 }
