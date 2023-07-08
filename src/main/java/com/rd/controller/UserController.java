@@ -3,7 +3,7 @@ package com.rd.controller;
 import com.rd.DTO.UserDTO;
 import com.rd.enums.Role;
 import com.rd.entity.User;
-import com.rd.service.UserServiceImpl;
+import com.rd.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

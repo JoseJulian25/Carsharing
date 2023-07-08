@@ -45,6 +45,6 @@ public class Vehicle {
     @JsonIgnore
     private List<StatusHistory> statusHistory;
 
-    @OneToOne(mappedBy = "vehicle", cascade = CascadeType.ALL)
-    private Reservation reservation;
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
+    private List<Reservation> reservations;
 }

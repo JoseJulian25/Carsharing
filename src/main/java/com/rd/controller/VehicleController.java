@@ -3,7 +3,7 @@ package com.rd.controller;
 import com.rd.DTO.VehicleDTO;
 import com.rd.enums.EStatus;
 import com.rd.enums.ETypeVehicle;
-import com.rd.service.VehicleServiceImpl;
+import com.rd.service.impl.VehicleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

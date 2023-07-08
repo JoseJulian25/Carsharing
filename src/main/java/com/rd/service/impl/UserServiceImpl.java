@@ -1,4 +1,4 @@
-package com.rd.service;
+package com.rd.service.impl;
 
 
 import com.rd.DTO.UserDTO;
@@ -9,6 +9,7 @@ import com.rd.exception.DataNotFoundException;
 import com.rd.repository.AddressRepository;
 import com.rd.repository.TokenRepository;
 import com.rd.repository.UserRepository;
+import com.rd.service.UserService;
 import com.rd.token.Token;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService  {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;

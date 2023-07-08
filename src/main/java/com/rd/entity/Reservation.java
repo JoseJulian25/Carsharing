@@ -1,5 +1,7 @@
 package com.rd.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.rd.enums.StatusReservation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -18,7 +21,7 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
     private Vehicle vehicle;
 
@@ -26,8 +29,10 @@ public class Reservation {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
     private LocalDateTime reservationDate;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    private boolean active;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date startDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date endDate;
+    private StatusReservation statusReservation;
+    private Double cost;
 }
