@@ -29,10 +29,11 @@ public class Reservation {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
     private LocalDateTime reservationDate;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date startDate;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date endDate;
+    @Enumerated(EnumType.STRING)
     private StatusReservation statusReservation;
     private Double cost;
 }

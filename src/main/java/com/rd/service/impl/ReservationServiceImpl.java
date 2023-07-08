@@ -17,8 +17,11 @@ import com.rd.utils.ReservationMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -51,6 +54,12 @@ public class ReservationServiceImpl implements ReservationService {
         updateVehicleStatus(vehicle);
 
         return ReservationMapper.buildReservationDTO(reservationRepository.save(savedReservation));
+    }
+
+    public void updateCompletedReservations(Date currentDate){
+        List<Reservation> completedReservations = reservationRepository.findCompletedReservations(currentDate);
+        completedReservations.forEach(reservation -> reservation.setStatusReservation(StatusReservation.COMPLETED));
+        reservationRepository.saveAll(completedReservations);
     }
 
     private long calculateDays(Date startDay, Date endDay){
