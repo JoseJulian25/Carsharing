@@ -14,4 +14,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     @Query("SELECT r FROM Reservation r WHERE r.statusReservation = 'ACTIVE' AND r.endDate <:currentDate")
     List<Reservation> findCompletedReservations(Date currentDate);
+
+    @Query("SELECT r FROM Reservation r WHERE r.statusReservation = 'ACTIVE'")
+    List<Reservation> findActiveReservations();
 }

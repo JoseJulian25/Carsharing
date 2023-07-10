@@ -56,10 +56,15 @@ public class ReservationServiceImpl implements ReservationService {
         return ReservationMapper.buildReservationDTO(reservationRepository.save(savedReservation));
     }
 
-    public void updateCompletedReservations(Date currentDate){
-        List<Reservation> completedReservations = reservationRepository.findCompletedReservations(currentDate);
-        completedReservations.forEach(reservation -> reservation.setStatusReservation(StatusReservation.COMPLETED));
-        reservationRepository.saveAll(completedReservations);
+    @Override
+    public List<Reservation> findActiveReservations() {
+        return reservationRepository.findActiveReservations();
+    }
+
+    public void updateCompletedReservations(Integer reservationId){
+        Reservation reservation = reservationRepository.findById(reservationId).orElseThrow( () -> new DataNotFoundException("No"));
+        reservation.setStatusReservation(StatusReservation.COMPLETED);
+        reservationRepository.save(reservation);
     }
 
     private long calculateDays(Date startDay, Date endDay){
