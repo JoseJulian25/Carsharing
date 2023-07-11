@@ -67,6 +67,18 @@ public class ReservationServiceImpl implements ReservationService {
         reservationRepository.save(reservation);
     }
 
+    private Reservation createReservation(Reservation reservation, Vehicle vehicle, User user, double cost){
+        return Reservation.builder()
+                .vehicle(vehicle)
+                .user(user)
+                .reservationDate(LocalDateTime.now())
+                .startDate(reservation.getStartDate())
+                .endDate(reservation.getEndDate())
+                .statusReservation(StatusReservation.ACTIVE)
+                .cost(cost)
+                .build();
+    }
+
     private long calculateDays(Date startDay, Date endDay){
         long differenceInMilliseconds = endDay.getTime() - startDay.getTime();
         return TimeUnit.DAYS.convert(differenceInMilliseconds, TimeUnit.MILLISECONDS);
@@ -85,18 +97,6 @@ public class ReservationServiceImpl implements ReservationService {
         if(vehicle.getStatus().getStatus() == EStatus.RESERVED){
             throw new RuntimeException("Vehicle is reserved");
         }
-    }
-
-    private Reservation createReservation(Reservation reservation, Vehicle vehicle, User user, double cost){
-       return Reservation.builder()
-                .vehicle(vehicle)
-                .user(user)
-                .reservationDate(LocalDateTime.now())
-                .startDate(reservation.getStartDate())
-                .endDate(reservation.getEndDate())
-                .statusReservation(StatusReservation.ACTIVE)
-                .cost(cost)
-                .build();
     }
 
     private void updateVehicleStatus(Vehicle vehicle) {
