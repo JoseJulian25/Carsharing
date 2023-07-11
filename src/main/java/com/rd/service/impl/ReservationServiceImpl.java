@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -79,9 +80,8 @@ public class ReservationServiceImpl implements ReservationService {
                 .build();
     }
 
-    private long calculateDays(Date startDay, Date endDay){
-        long differenceInMilliseconds = endDay.getTime() - startDay.getTime();
-        return TimeUnit.DAYS.convert(differenceInMilliseconds, TimeUnit.MILLISECONDS);
+    private long calculateDays(LocalDateTime startDay, LocalDateTime endDay){
+        return Duration.between(startDay, endDay).toDays();
     }
 
     private double calculateCost(long days, double priceVehicle){

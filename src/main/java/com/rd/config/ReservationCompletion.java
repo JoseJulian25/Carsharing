@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,12 +30,10 @@ public class ReservationCompletion {
 
     @Scheduled(cron = "0 */2 * * * *")
     public void updateCompletedReservations() {
-        Date currentDate = new Date();
         List<Reservation> completedReservations = new ArrayList<>();
 
         for (Reservation reservation : activeReservations) {
-            long timeRemaining = reservation.getEndDate().getTime() - currentDate.getTime();
-            long minutesRemaining = TimeUnit.MILLISECONDS.toMinutes(timeRemaining);
+           long minutesRemaining = ChronoUnit.MINUTES.between(LocalDateTime.now(),reservation.getEndDate());
 
             if (minutesRemaining <= 60) {
                 reservationService.updateCompletedReservations(reservation.getId());
