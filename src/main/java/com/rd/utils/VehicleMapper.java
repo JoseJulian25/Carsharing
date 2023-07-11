@@ -37,6 +37,7 @@ public class VehicleMapper {
 
     public static Vehicle buildVehicleObject(VehicleDTO vehicleDTO, Make make, Model model, VehicleStatus vehicleStatus, TypeVehicle typeVehicle) {
         return Vehicle.builder()
+                .id(vehicleDTO.getId())
                 .serialNumber(vehicleDTO.getSerialNumber())
                 .make(make)
                 .model(model)

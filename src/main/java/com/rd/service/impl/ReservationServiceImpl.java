@@ -13,6 +13,7 @@ import com.rd.repository.UserRepository;
 import com.rd.repository.VehicleRepository;
 import com.rd.service.ReservationService;
 import com.rd.service.VehicleServiceHelper;
+import com.rd.utils.ListValidation;
 import com.rd.utils.ReservationMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,10 +31,17 @@ public class ReservationServiceImpl implements ReservationService {
     private final VehicleServiceHelper vehicleServiceHelper;
 
     @Override
-    public Optional<Reservation> findById(Integer id) {
-        return Optional.empty();
+    public ReservationDTO findById(Integer id) {
+        Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Id not found: " + id));
+        return ReservationMapper.buildReservationDTO(reservation);
     }
 
+    @Override
+    public List<ReservationDTO> findAll() {
+        List<Reservation> reservations = reservationRepository.findAll();
+        ListValidation.checkNonEmptyList(reservations, () -> "Reservations not found");
+        return ReservationMapper.buildListReservationDTO(reservations);
+    }
 
     @Transactional
     @Override
@@ -54,8 +61,18 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> findActiveReservations() {
-        return reservationRepository.findActiveReservations();
+    public List<ReservationDTO> findActiveReservations() {
+        return ReservationMapper.buildListReservationDTO(reservationRepository.findActiveReservations());
+    }
+
+    @Transactional
+    @Override
+    public void deleteReservation(Integer id) {
+        Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new DataNotFoundException("not found with id: " + id));
+        Vehicle vehicle = reservation.getVehicle();
+        vehicle.getStatus().setStatus(EStatus.AVAILABLE);
+        vehicleRepository.save(vehicle);
+        reservationRepository.delete(reservation);
     }
 
     public void updateCompletedReservations(Integer reservationId){

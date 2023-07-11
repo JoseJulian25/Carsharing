@@ -1,7 +1,9 @@
 package com.rd.config;
 
 import com.rd.entity.Reservation;
+import com.rd.repository.ReservationRepository;
 import com.rd.service.MailService;
+import com.rd.service.ReservationService;
 import com.rd.service.impl.ReservationServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,13 +16,14 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class ReservationCompletion {
+    private final ReservationRepository reservationRepository;
     private final ReservationServiceImpl reservationService;
     private final List<Reservation> activeReservations = new ArrayList<>();
     private final MailService mailService;
 
     @Scheduled(cron = "0 */1 * * * *")
     public void initializeActiveReservations() {
-        List<Reservation> activeReservationsFromDB = reservationService.findActiveReservations();
+        List<Reservation> activeReservationsFromDB = reservationRepository.findActiveReservations();
         activeReservations.addAll(activeReservationsFromDB);
         System.out.println("Reservas buscadas");
     }
