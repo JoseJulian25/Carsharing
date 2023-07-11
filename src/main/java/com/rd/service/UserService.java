@@ -4,7 +4,6 @@ package com.rd.service;
 import com.rd.DTO.UserDTO;
 import com.rd.enums.Role;
 import com.rd.entity.User;
-
 import java.util.List;
 
 public interface UserService {
