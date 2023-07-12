@@ -11,6 +11,7 @@ import com.rd.repository.TokenRepository;
 import com.rd.repository.UserRepository;
 import com.rd.service.UserService;
 import com.rd.token.Token;
+import com.rd.utils.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,43 +28,44 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<UserDTO> findAll() {
+        return UserMapper.buildListUserDTO(userRepository.findAll());
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<User> findAllByRole(Role role) {
-        return userRepository.findByRole(role);
+    public List<UserDTO> findAllByRole(Role role) {
+        return UserMapper.buildListUserDTO(userRepository.findByRole(role));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<User> findAllByAddressCountry(String country) {
+    public List<UserDTO> findAllByAddressCountry(String country) {
         List<User> usersByAddressCountry = userRepository.findAllByAddress_Country(country);
 
         if(usersByAddressCountry.isEmpty())
             throw new DataNotFoundException("Country not found: " + country);
 
-        return usersByAddressCountry;
+        return UserMapper.buildListUserDTO(usersByAddressCountry);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<User> findAllByCountryAndCity(String country, String city) {
+    public List<UserDTO> findAllByCountryAndCity(String country, String city) {
         List<User> UsersByCountryAndCity = userRepository.findAllByAddress_CountryAndAddress_City(country, city);
 
         if(UsersByCountryAndCity.isEmpty()){
             throw new DataNotFoundException("City and Country not found: " + country + "," + city);
         }
-        return UsersByCountryAndCity;
+        return UserMapper.buildListUserDTO(UsersByCountryAndCity);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() ->
+    public UserDTO findByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() ->
                 new DataNotFoundException("email doesn't exist: " + email));
+        return UserMapper.buildUserDTO(user);
     }
 
     @Override
@@ -80,7 +82,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User updateUser(UserDTO userDTO, Integer userId) {
+    public UserDTO updateUser(UserDTO userDTO, Integer userId) {
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new DataNotFoundException("User not found"));
 
@@ -94,7 +96,7 @@ public class UserServiceImpl implements UserService {
         Address updatedAddress = updateOrCreateAddress(userDTO.getAddress(), existingAddress);
         existingUser.setAddress(updatedAddress);
 
-        return userRepository.save(existingUser);
+        return UserMapper.buildUserDTO(userRepository.save(existingUser));
     }
     private Address updateOrCreateAddress(Address newAddress, Address existingAddress) {
         if (existingAddress != null) {

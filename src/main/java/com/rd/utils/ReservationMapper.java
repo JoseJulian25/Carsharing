@@ -20,9 +20,27 @@ public class ReservationMapper {
                 .build();
     }
 
+    public static ReservationDTO buildReservationDTOWithoutUser(Reservation reservation){
+        return ReservationDTO.builder()
+                .id(reservation.getId())
+                .vehicle(VehicleMapper.buildVehicleDTO(reservation.getVehicle()))
+                .reservationDate(reservation.getReservationDate())
+                .startDate(reservation.getStartDate())
+                .endDate(reservation.getEndDate())
+                .cost(reservation.getCost())
+                .statusReservation(reservation.getStatusReservation())
+                .build();
+    }
+
     public static List<ReservationDTO> buildListReservationDTO(List<Reservation> reservations){
         List<ReservationDTO> reservationDTOS = new ArrayList<>();
         reservations.forEach(reservation -> reservationDTOS.add(buildReservationDTO(reservation)));
+        return reservationDTOS;
+    }
+
+    public static List<ReservationDTO> buildListReservationDTOWithoutUser(List<Reservation> reservations){
+        List<ReservationDTO> reservationDTOS = new ArrayList<>();
+        reservations.forEach(reservation -> reservationDTOS.add(buildReservationDTOWithoutUser(reservation)));
         return reservationDTOS;
     }
 }

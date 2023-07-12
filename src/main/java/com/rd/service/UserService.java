@@ -7,11 +7,11 @@ import com.rd.entity.User;
 import java.util.List;
 
 public interface UserService {
-    List<User> findAll();
-    List<User> findAllByRole(Role role);
-    List<User> findAllByAddressCountry(String country);
-    List<User> findAllByCountryAndCity(String country, String city);
-    User findByEmail(String email);
+    List<UserDTO> findAll();
+    List<UserDTO> findAllByRole(Role role);
+    List<UserDTO> findAllByAddressCountry(String country);
+    List<UserDTO> findAllByCountryAndCity(String country, String city);
+    UserDTO findByEmail(String email);
     void deleteUserById(Integer id);
-    User updateUser(UserDTO user, Integer id);
+    UserDTO updateUser(UserDTO user, Integer id);
 }

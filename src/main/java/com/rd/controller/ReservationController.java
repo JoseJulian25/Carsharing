@@ -19,7 +19,7 @@ public class ReservationController {
     public ResponseEntity<ReservationDTO> findById(@RequestParam Integer id){
         return ResponseEntity.ok(reservationService.findById(id));
     }
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<ReservationDTO>> findAll(){
         return ResponseEntity.ok(reservationService.findAll());
     }

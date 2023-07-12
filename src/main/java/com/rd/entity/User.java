@@ -63,7 +63,6 @@ public class User implements UserDetails {
     private List<Token> token;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
     private List<Reservation> reservations;
 
     @Override
