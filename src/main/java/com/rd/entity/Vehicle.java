@@ -1,6 +1,5 @@
 package com.rd.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,9 +40,11 @@ public class Vehicle {
     private String additionalNotes;
 
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<StatusHistory> statusHistory;
 
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
     private List<Reservation> reservations;
+
+    @OneToMany(mappedBy = "vehicle")
+    private List<VehicleRatings> vehicleRatings;
 }
