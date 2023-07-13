@@ -17,7 +17,7 @@ public class UserController {
     private final UserServiceImpl userService;
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<User> findUserByEmail(@PathVariable String email){
+    public ResponseEntity<UserDTO> findUserByEmail(@PathVariable String email){
         return ResponseEntity.ok(userService.findByEmail(email));
     }
 
@@ -27,22 +27,22 @@ public class UserController {
     }
 
     @GetMapping("/role")
-    public ResponseEntity<List<User>> findUserByRole(@RequestParam Role role){
+    public ResponseEntity<List<UserDTO>> findUserByRole(@RequestParam Role role){
         return ResponseEntity.ok(userService.findAllByRole(role));
     }
 
     @GetMapping("/country/{country}")
-    public ResponseEntity<List<User>> findAllByCountry(@PathVariable String country){
+    public ResponseEntity<List<UserDTO>> findAllByCountry(@PathVariable String country){
         return new ResponseEntity<>(userService.findAllByAddressCountry(country), HttpStatus.FOUND);
     }
 
     @GetMapping("/country/{country}/city/{city}")
-    public ResponseEntity<List<User>> findAllByCountryAndCity(@PathVariable String country, @PathVariable String city){
+    public ResponseEntity<List<UserDTO>> findAllByCountryAndCity(@PathVariable String country, @PathVariable String city){
         return new ResponseEntity<>(userService.findAllByCountryAndCity(country, city), HttpStatus.FOUND);
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<User> updateUser(@RequestParam Integer id,@RequestBody UserDTO user){
+    public ResponseEntity<UserDTO> updateUser(@RequestParam Integer id,@RequestBody UserDTO user){
         return new ResponseEntity<>(userService.updateUser(user, id), HttpStatus.OK);
     }
 

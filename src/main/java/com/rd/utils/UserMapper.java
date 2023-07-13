@@ -19,7 +19,7 @@ public class UserMapper {
                 .password(user.getPassword())
                 .address(user.getAddress())
                 .telephone(user.getTelephone())
-                .reservationDTOS(ReservationMapper.buildListReservationDTOWithoutUser(user.getReservations()))
+                .reservations(ReservationMapper.buildListReservationDTOWithoutUser(user.getReservations()))
                 .build();
     }
 
