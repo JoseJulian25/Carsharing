@@ -33,4 +33,7 @@ public class Reservation {
     @Enumerated(EnumType.STRING)
     private StatusReservation statusReservation;
     private Double cost;
+
+    @OneToOne(mappedBy = "reservation")
+    private Payment payment;
 }

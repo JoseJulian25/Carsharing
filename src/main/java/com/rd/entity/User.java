@@ -1,7 +1,9 @@
 package com.rd.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rd.enums.Role;
 import com.rd.token.Token;
 import jakarta.persistence.*;
@@ -63,9 +65,17 @@ public class User implements UserDetails {
     private List<Token> token;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Reservation> reservations;
+
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<VehicleRatings> vehicleRatings;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Payment> payments;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
