@@ -7,20 +7,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping("api/rating")
 @RestController
 @RequiredArgsConstructor
 public class VehicleRatingsController {
     private final VehicleRatingsServiceImpl vehicleRatingsService;
 
-
     @GetMapping("/user/{userId}")
-    public ResponseEntity<VehicleRatingResponseDTO> findByUserId(@PathVariable Integer userId){
+    public ResponseEntity<List<VehicleRatingResponseDTO>> findByUserId(@PathVariable Integer userId){
         return ResponseEntity.ok(vehicleRatingsService.findByUser(userId));
     }
 
     @GetMapping("/vehicle/{vehicleId}")
-    public ResponseEntity<VehicleRatingResponseDTO> findByVehicleId(@PathVariable Integer vehicleId){
+    public ResponseEntity<List<VehicleRatingResponseDTO>> findByVehicleId(@PathVariable Integer vehicleId){
         return ResponseEntity.ok(vehicleRatingsService.findByVehicle(vehicleId));
     }
 
