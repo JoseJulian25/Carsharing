@@ -59,7 +59,7 @@ public class VehicleServiceHelper {
                 .build());
     }
 
-    public void deactiveLastStatus(Vehicle vehicle){
+    public void deactivateLastStatus(Vehicle vehicle){
         StatusHistory lastActiveHistory = statusHistoryRepository.findTopByVehicleAndActiveOrderByUpdateDateDesc(vehicle, true);
         if(lastActiveHistory != null){
             lastActiveHistory.setActive(false);
