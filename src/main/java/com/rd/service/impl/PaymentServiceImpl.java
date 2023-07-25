@@ -1,13 +1,15 @@
 package com.rd.service.impl;
 
-import com.rd.entity.Payment;
-import com.rd.entity.Reservation;
-import com.rd.entity.User;
+import com.rd.entity.*;
+import com.rd.enums.EStatus;
+import com.rd.enums.StatusReservation;
 import com.rd.exception.DataNotFoundException;
 import com.rd.repository.PaymentRepository;
 import com.rd.repository.ReservationRepository;
 import com.rd.repository.UserRepository;
+import com.rd.repository.VehicleRepository;
 import com.rd.service.PaymentService;
+import com.rd.service.VehicleServiceHelper;
 import com.rd.utils.ListValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
     private final UserRepository userRepository;
     private final ReservationRepository reservationRepository;
+    private final VehicleServiceHelper vehicleServiceHelper;
+    private final VehicleRepository vehicleRepository;
 
     @Override
     public Payment findById(Integer id) {
@@ -45,11 +49,15 @@ public class PaymentServiceImpl implements PaymentService {
     public Payment savePayment(Payment payment, Integer userId, Integer reservationId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("user not found"));
         Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(() -> new DataNotFoundException("reservation not found"));
+        reservation.setStatusReservation(StatusReservation.ACTIVE);
 
         payment.setUser(user);
         payment.setReservation(reservation);
         payment.setAmount(reservation.getCost());
         payment.setDate(new Date());
+
+        updateVehicleStatus(reservation.getVehicle());
+        reservationRepository.save(reservation);
         return paymentRepository.save(payment);
     }
 
@@ -64,5 +72,13 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public Payment updatePayment(Payment payment) {
         return null;
+    }
+
+    private void updateVehicleStatus(Vehicle vehicle) {
+        VehicleStatus vehicleStatus = vehicleServiceHelper.findOrCreateVehicleStatus(EStatus.RESERVED);
+        vehicle.setStatus(vehicleStatus);
+        vehicleRepository.save(vehicle);
+        vehicleServiceHelper.createStatusHistory(vehicle);
+        vehicleServiceHelper.deactivateLastStatus(vehicle);
     }
 }

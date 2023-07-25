@@ -4,7 +4,6 @@ import com.rd.DTO.ReservationDTO;
 import com.rd.entity.Reservation;
 import com.rd.entity.User;
 import com.rd.entity.Vehicle;
-import com.rd.entity.VehicleStatus;
 import com.rd.enums.EStatus;
 import com.rd.enums.StatusReservation;
 import com.rd.exception.DataNotFoundException;
@@ -28,7 +27,6 @@ public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
     private final VehicleRepository vehicleRepository;
     private final UserRepository userRepository;
-    private final VehicleServiceHelper vehicleServiceHelper;
 
     @Override
     public ReservationDTO findById(Integer id) {
@@ -55,7 +53,7 @@ public class ReservationServiceImpl implements ReservationService {
         double cost = calculateCost(days, vehicle.getPrice());
 
         Reservation savedReservation = createReservation(reservation, vehicle, user, cost);
-        updateVehicleStatus(vehicle);
+        vehicleRepository.save(vehicle);
 
         return ReservationMapper.buildReservationDTO(reservationRepository.save(savedReservation));
     }
@@ -88,7 +86,7 @@ public class ReservationServiceImpl implements ReservationService {
                 .reservationDate(LocalDateTime.now())
                 .startDate(reservation.getStartDate())
                 .endDate(reservation.getEndDate())
-                .statusReservation(StatusReservation.ACTIVE)
+                .statusReservation(StatusReservation.PENDING)
                 .cost(cost)
                 .build();
     }
@@ -110,13 +108,5 @@ public class ReservationServiceImpl implements ReservationService {
         if(vehicle.getStatus().getStatus() == EStatus.RESERVED){
             throw new RuntimeException("Vehicle is reserved");
         }
-    }
-
-    private void updateVehicleStatus(Vehicle vehicle) {
-        VehicleStatus vehicleStatus = vehicleServiceHelper.findOrCreateVehicleStatus(EStatus.RESERVED);
-        vehicle.setStatus(vehicleStatus);
-        vehicleRepository.save(vehicle);
-        vehicleServiceHelper.createStatusHistory(vehicle);
-        vehicleServiceHelper.deactiveLastStatus(vehicle);
     }
 }
