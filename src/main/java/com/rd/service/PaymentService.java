@@ -11,5 +11,4 @@ public interface PaymentService {
     List<Payment> findAll();
     Payment savePayment(Payment payment, Integer userId, Integer reservationId);
     String deletePayment(Integer id);
-    Payment updatePayment(Payment payment);
 }

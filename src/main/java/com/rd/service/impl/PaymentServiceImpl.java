@@ -66,12 +66,12 @@ public class PaymentServiceImpl implements PaymentService {
     public String deletePayment(Integer id) {
         Payment payment = paymentRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Payment not found"));
         paymentRepository.delete(payment);
-        return "Payment deleted successfully";
-    }
 
-    @Override
-    public Payment updatePayment(Payment payment) {
-        return null;
+        Vehicle vehicle = payment.getReservation().getVehicle();
+        VehicleStatus vehicleStatus = vehicleServiceHelper.findOrCreateVehicleStatus(EStatus.AVAILABLE);
+        vehicle.setStatus(vehicleStatus);
+        vehicleRepository.save(vehicle);
+        return "Payment deleted successfully";
     }
 
     private void updateVehicleStatus(Vehicle vehicle) {

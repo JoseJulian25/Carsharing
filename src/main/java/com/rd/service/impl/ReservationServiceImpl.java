@@ -11,7 +11,6 @@ import com.rd.repository.ReservationRepository;
 import com.rd.repository.UserRepository;
 import com.rd.repository.VehicleRepository;
 import com.rd.service.ReservationService;
-import com.rd.service.VehicleServiceHelper;
 import com.rd.utils.ListValidation;
 import com.rd.utils.ReservationMapper;
 import lombok.RequiredArgsConstructor;
@@ -67,9 +66,6 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void deleteReservation(Integer id) {
         Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new DataNotFoundException("not found with id: " + id));
-        Vehicle vehicle = reservation.getVehicle();
-        vehicle.getStatus().setStatus(EStatus.AVAILABLE);
-        vehicleRepository.save(vehicle);
         reservationRepository.delete(reservation);
     }
 
