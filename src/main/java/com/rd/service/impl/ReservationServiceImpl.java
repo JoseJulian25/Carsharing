@@ -62,6 +62,12 @@ public class ReservationServiceImpl implements ReservationService {
         return ReservationMapper.buildListReservationDTO(reservationRepository.findActiveReservations());
     }
 
+    @Override
+    public List<ReservationDTO> findByUserId(Integer id) {
+       userRepository.findById(id).orElseThrow(() -> new DataNotFoundException("User not found"));
+       return ReservationMapper.buildListReservationDTO(reservationRepository.findByUser_Id(id));
+    }
+
     @Transactional
     @Override
     public void deleteReservation(Integer id) {

@@ -29,6 +29,11 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.findActiveReservations());
     }
 
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<ReservationDTO>> findByUserId(@PathVariable Integer id){
+        return ResponseEntity.ok(reservationService.findByUserId(id));
+    }
+
     @PostMapping
     public ResponseEntity<ReservationDTO> saveReservation(@RequestBody Reservation reservation, @RequestParam Integer userId, @RequestParam Integer vehicleId){
         return ResponseEntity.ok(reservationService.saveReservation(reservation, userId, vehicleId));

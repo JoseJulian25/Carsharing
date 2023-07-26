@@ -10,5 +10,6 @@ public interface ReservationService {
     List<ReservationDTO> findAll();
     ReservationDTO saveReservation(Reservation reservation, Integer vehicleId, Integer userId);
     List<ReservationDTO> findActiveReservations();
+    List<ReservationDTO> findByUserId(Integer id);
     void deleteReservation(Integer id);
 }
