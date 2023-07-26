@@ -1,5 +1,6 @@
 package com.rd.service.impl;
 
+import com.rd.DTO.PaymentDTO;
 import com.rd.entity.*;
 import com.rd.enums.EStatus;
 import com.rd.enums.StatusReservation;
@@ -11,6 +12,7 @@ import com.rd.repository.VehicleRepository;
 import com.rd.service.PaymentService;
 import com.rd.service.VehicleServiceHelper;
 import com.rd.utils.ListValidation;
+import com.rd.utils.PaymentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,24 +31,26 @@ public class PaymentServiceImpl implements PaymentService {
     private final VehicleRepository vehicleRepository;
 
     @Override
-    public Payment findById(Integer id) {
-        return paymentRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Payment not found"));
+    public PaymentDTO findById(Integer id) {
+        Payment payment = paymentRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Payment not found"));
+        return PaymentMapper.buildDTO(payment);
     }
 
     @Override
-    public List<Payment> findByUserId(Integer id) {
+    public List<PaymentDTO> findByUserId(Integer id) {
         User user = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException("user not found"));
-        return paymentRepository.findByUser(user);
+        return PaymentMapper.buildListDTO(paymentRepository.findByUser(user));
     }
 
     @Override
-    public List<Payment> findAll() {
-        return ListValidation.checkNonEmptyList(paymentRepository.findAll(), () -> "List empty");
+    public List<PaymentDTO> findAll() {
+        List<Payment> payments = ListValidation.checkNonEmptyList(paymentRepository.findAll(), () -> "List empty");
+        return PaymentMapper.buildListDTO(payments);
     }
 
     @Transactional
     @Override
-    public Payment savePayment(Payment payment, Integer userId, Integer reservationId) {
+    public PaymentDTO savePayment(Payment payment, Integer userId, Integer reservationId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("user not found"));
         Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(() -> new DataNotFoundException("reservation not found"));
         reservation.setStatusReservation(StatusReservation.ACTIVE);
@@ -58,7 +62,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         updateVehicleStatus(reservation.getVehicle());
         reservationRepository.save(reservation);
-        return paymentRepository.save(payment);
+        return PaymentMapper.buildDTO(paymentRepository.save(payment));
     }
 
     @Transactional
