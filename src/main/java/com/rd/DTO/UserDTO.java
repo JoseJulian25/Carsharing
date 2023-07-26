@@ -21,5 +21,4 @@ public class UserDTO {
     private String password;
     private Address address;
     private String telephone;
-    private List<ReservationDTO> reservations;
 }

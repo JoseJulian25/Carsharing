@@ -1,10 +1,7 @@
 package com.rd.utils;
 
-import com.rd.DTO.ReservationDTO;
 import com.rd.DTO.UserDTO;
-import com.rd.entity.Reservation;
 import com.rd.entity.User;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +16,6 @@ public class UserMapper {
                 .password(user.getPassword())
                 .address(user.getAddress())
                 .telephone(user.getTelephone())
-                .reservations(ReservationMapper.buildListReservationDTOWithoutUser(user.getReservations()))
                 .build();
     }
 
