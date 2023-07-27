@@ -10,7 +10,7 @@ import com.rd.repository.UserRepository;
 import com.rd.repository.VehicleRatingsRepository;
 import com.rd.repository.VehicleRepository;
 import com.rd.service.VehicleRatingsService;
-import com.rd.utils.VehicleRatingsMapper;
+import com.rd.mappers.VehicleRatingsMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +30,8 @@ public class VehicleRatingsServiceImpl implements VehicleRatingsService {
         User user = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("User not found"));
         Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new DataNotFoundException("vehicle not found"));
 
-        VehicleRatings vehicleRatings1 = VehicleRatingsMapper.buildVehicleRatingsObject(vehicleRatings, user, vehicle);
-        return VehicleRatingsMapper.buildVehicleRatingResponse(vehicleRatingsRepository.save(vehicleRatings1));
+        VehicleRatings vehicleRatings1 = VehicleRatingsMapper.buildObject(vehicleRatings, user, vehicle);
+        return VehicleRatingsMapper.buildResponseDTO(vehicleRatingsRepository.save(vehicleRatings1));
     }
 
     @Override

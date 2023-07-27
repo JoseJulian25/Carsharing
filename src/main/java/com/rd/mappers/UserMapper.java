@@ -1,4 +1,4 @@
-package com.rd.utils;
+package com.rd.mappers;
 
 import com.rd.DTO.UserDTO;
 import com.rd.entity.User;
@@ -7,7 +7,7 @@ import java.util.List;
 
 public class UserMapper {
 
-    public static UserDTO buildUserDTO(User user) {
+    public static UserDTO buildDTO(User user) {
         return UserDTO.builder()
                 .name(user.getName())
                 .lastname(user.getLastname())
@@ -19,9 +19,9 @@ public class UserMapper {
                 .build();
     }
 
-    public static List<UserDTO> buildListUserDTO(List<User> users){
+    public static List<UserDTO> buildListDTO(List<User> users){
         List<UserDTO> reservationDTOS = new ArrayList<>();
-        users.forEach(reservation -> reservationDTOS.add(buildUserDTO(reservation)));
+        users.forEach(reservation -> reservationDTOS.add(buildDTO(reservation)));
         return reservationDTOS;
     }
 }

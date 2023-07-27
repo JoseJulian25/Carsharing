@@ -1,6 +1,5 @@
-package com.rd.utils;
+package com.rd.mappers;
 
-import com.rd.DTO.VehicleDTO;
 import com.rd.DTO.VehicleRatingRequestDTO;
 import com.rd.DTO.VehicleRatingResponseDTO;
 import com.rd.entity.User;
@@ -12,7 +11,7 @@ import java.util.List;
 
 public class VehicleRatingsMapper {
 
-    public static VehicleRatings buildVehicleRatingsObject(VehicleRatingRequestDTO vehicleRatingRequestDTO, User user, Vehicle vehicle){
+    public static VehicleRatings buildObject(VehicleRatingRequestDTO vehicleRatingRequestDTO, User user, Vehicle vehicle){
         return VehicleRatings.builder()
                 .vehicle(vehicle)
                 .user(user)
@@ -21,11 +20,11 @@ public class VehicleRatingsMapper {
                 .build();
     }
 
-    public static VehicleRatingResponseDTO buildVehicleRatingResponse(VehicleRatings vehicleRatings){
+    public static VehicleRatingResponseDTO buildResponseDTO(VehicleRatings vehicleRatings){
         return VehicleRatingResponseDTO.builder()
                 .id(vehicleRatings.getId())
-                .vehicle(VehicleMapper.buildVehicleDTO(vehicleRatings.getVehicle()))
-                .user(UserMapper.buildUserDTO(vehicleRatings.getUser()))
+                .vehicle(VehicleMapper.buildDTO(vehicleRatings.getVehicle()))
+                .user(UserMapper.buildDTO(vehicleRatings.getUser()))
                 .rating(vehicleRatings.getRating())
                 .comment(vehicleRatings.getComment())
                 .build();
@@ -33,7 +32,7 @@ public class VehicleRatingsMapper {
 
     public static List<VehicleRatingResponseDTO> buildListVehicleRatingResponse(List<VehicleRatings> vehicleRatings){
         List<VehicleRatingResponseDTO> vehicleRatingResponseDTOS = new ArrayList<>();
-        vehicleRatings.forEach(vehicleDTO -> vehicleRatingResponseDTOS.add(buildVehicleRatingResponse(vehicleDTO)));
+        vehicleRatings.forEach(vehicleDTO -> vehicleRatingResponseDTOS.add(buildResponseDTO(vehicleDTO)));
         return vehicleRatingResponseDTOS;
     }
 }

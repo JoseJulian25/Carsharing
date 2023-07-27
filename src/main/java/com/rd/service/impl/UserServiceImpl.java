@@ -11,7 +11,7 @@ import com.rd.repository.TokenRepository;
 import com.rd.repository.UserRepository;
 import com.rd.service.UserService;
 import com.rd.token.Token;
-import com.rd.utils.UserMapper;
+import com.rd.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,13 +29,13 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public List<UserDTO> findAll() {
-        return UserMapper.buildListUserDTO(userRepository.findAll());
+        return UserMapper.buildListDTO(userRepository.findAll());
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<UserDTO> findAllByRole(Role role) {
-        return UserMapper.buildListUserDTO(userRepository.findByRole(role));
+        return UserMapper.buildListDTO(userRepository.findByRole(role));
     }
 
     @Transactional(readOnly = true)
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
         if(usersByAddressCountry.isEmpty())
             throw new DataNotFoundException("Country not found: " + country);
 
-        return UserMapper.buildListUserDTO(usersByAddressCountry);
+        return UserMapper.buildListDTO(usersByAddressCountry);
     }
 
     @Transactional(readOnly = true)
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
         if(UsersByCountryAndCity.isEmpty()){
             throw new DataNotFoundException("City and Country not found: " + country + "," + city);
         }
-        return UserMapper.buildListUserDTO(UsersByCountryAndCity);
+        return UserMapper.buildListDTO(UsersByCountryAndCity);
     }
 
     @Transactional(readOnly = true)
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO findByEmail(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(() ->
                 new DataNotFoundException("email doesn't exist: " + email));
-        return UserMapper.buildUserDTO(user);
+        return UserMapper.buildDTO(user);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
         Address updatedAddress = updateOrCreateAddress(userDTO.getAddress(), existingAddress);
         existingUser.setAddress(updatedAddress);
 
-        return UserMapper.buildUserDTO(userRepository.save(existingUser));
+        return UserMapper.buildDTO(userRepository.save(existingUser));
     }
     private Address updateOrCreateAddress(Address newAddress, Address existingAddress) {
         if (existingAddress != null) {

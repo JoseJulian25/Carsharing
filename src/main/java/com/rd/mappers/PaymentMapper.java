@@ -1,4 +1,4 @@
-package com.rd.utils;
+package com.rd.mappers;
 
 import com.rd.DTO.PaymentDTO;
 import com.rd.entity.Payment;
@@ -14,7 +14,7 @@ public class PaymentMapper {
                 .amount(payment.getAmount())
                 .paymentMethod(payment.getPaymentMethod())
                 .date(payment.getDate())
-                .reservationDTO(ReservationMapper.buildReservationDTO(payment.getReservation()))
+                .reservationDTO(ReservationMapper.buildDTO(payment.getReservation()))
                 .build();
     }
 

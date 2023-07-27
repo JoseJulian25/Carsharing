@@ -12,7 +12,7 @@ import com.rd.repository.UserRepository;
 import com.rd.repository.VehicleRepository;
 import com.rd.service.ReservationService;
 import com.rd.utils.ListValidation;
-import com.rd.utils.ReservationMapper;
+import com.rd.mappers.ReservationMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,14 +30,14 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public ReservationDTO findById(Integer id) {
         Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Id not found: " + id));
-        return ReservationMapper.buildReservationDTO(reservation);
+        return ReservationMapper.buildDTO(reservation);
     }
 
     @Override
     public List<ReservationDTO> findAll() {
         List<Reservation> reservations = reservationRepository.findAll();
         ListValidation.checkNonEmptyList(reservations, () -> "Reservations not found");
-        return ReservationMapper.buildListReservationDTO(reservations);
+        return ReservationMapper.buildListDTO(reservations);
     }
 
     @Transactional
@@ -54,18 +54,18 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation savedReservation = createReservation(reservation, vehicle, user, cost);
         vehicleRepository.save(vehicle);
 
-        return ReservationMapper.buildReservationDTO(reservationRepository.save(savedReservation));
+        return ReservationMapper.buildDTO(reservationRepository.save(savedReservation));
     }
 
     @Override
     public List<ReservationDTO> findActiveReservations() {
-        return ReservationMapper.buildListReservationDTO(reservationRepository.findActiveReservations());
+        return ReservationMapper.buildListDTO(reservationRepository.findActiveReservations());
     }
 
     @Override
     public List<ReservationDTO> findByUserId(Integer id) {
        userRepository.findById(id).orElseThrow(() -> new DataNotFoundException("User not found"));
-       return ReservationMapper.buildListReservationDTO(reservationRepository.findByUser_Id(id));
+       return ReservationMapper.buildListDTO(reservationRepository.findByUser_Id(id));
     }
 
     @Transactional

@@ -1,4 +1,4 @@
-package com.rd.utils;
+package com.rd.mappers;
 
 import com.rd.DTO.VehicleDTO;
 import com.rd.entity.*;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class VehicleMapper {
 
-    public static VehicleDTO buildVehicleDTO(Vehicle vehicle){
+    public static VehicleDTO buildDTO(Vehicle vehicle){
         return VehicleDTO.builder()
                 .id(vehicle.getId())
                 .serialNumber(vehicle.getSerialNumber())
@@ -23,15 +23,15 @@ public class VehicleMapper {
                 .build();
     }
 
-    public static List<VehicleDTO> buildListVehicleDTO(List<Vehicle> vehicles){
+    public static List<VehicleDTO> buildListDTO(List<Vehicle> vehicles){
         List<VehicleDTO> vehicleDTOS = new ArrayList<>();
-         vehicles.forEach(vehicleDTO -> vehicleDTOS.add(buildVehicleDTO(vehicleDTO)));
+         vehicles.forEach(vehicleDTO -> vehicleDTOS.add(buildDTO(vehicleDTO)));
         return vehicleDTOS;
     }
 
-    public static Page<VehicleDTO> buildPageVehicleDTO(Page<Vehicle> vehicles){
+    public static Page<VehicleDTO> buildPageDTO(Page<Vehicle> vehicles){
         List<VehicleDTO> vehicleDTOS = new ArrayList<>();
-        vehicles.forEach( vehicle -> vehicleDTOS.add(buildVehicleDTO(vehicle)));
+        vehicles.forEach( vehicle -> vehicleDTOS.add(buildDTO(vehicle)));
         return new PageImpl<>(vehicleDTOS, vehicles.getPageable(), vehicles.getTotalElements());
     }
 

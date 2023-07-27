@@ -12,7 +12,7 @@ import com.rd.repository.VehicleRepository;
 import com.rd.service.PaymentService;
 import com.rd.service.VehicleServiceHelper;
 import com.rd.utils.ListValidation;
-import com.rd.utils.PaymentMapper;
+import com.rd.mappers.PaymentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
