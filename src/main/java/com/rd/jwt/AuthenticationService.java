@@ -31,24 +31,15 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     @Transactional
-    public AuthenticationResponse register(UserDTO request){
+    public AuthenticationResponse register(UserDTO userDTO){
         Address address = addressRepository.findByCountryCityStreetAndPostalCode(
-                request.getAddress().getCountry(),
-                request.getAddress().getCity(),
-                request.getAddress().getStreet(),
-                request.getAddress().getPostalCode()
-        ).orElseGet(() -> addressRepository.save(request.getAddress()));
+                userDTO.getAddress().getCountry(),
+                userDTO.getAddress().getCity(),
+                userDTO.getAddress().getStreet(),
+                userDTO.getAddress().getPostalCode()
+        ).orElseGet(() -> addressRepository.save(userDTO.getAddress()));
 
-        User user = User.builder()
-                .name(request.getName())
-                .lastname(request.getLastname())
-                .email(request.getEmail())
-                .passw(passwordEncoder.encode(request.getPassword()))
-                .dateBirth(request.getDateBirth())
-                .telephone(request.getTelephone())
-                .role(Role.USER)
-                .address(address)
-                .build();
+        User user = createUser(userDTO, address);
 
         User savedUser = userRepository.save(user);
         String jwtToken = jwtService.generateToken(user);
@@ -69,7 +60,8 @@ public class AuthenticationService {
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
-    private void saveUserToken(User user, String jwtToken) {
+    @Transactional
+    protected void saveUserToken(User user, String jwtToken) {
         Token token = Token.builder()
                 .user(user)
                 .token(jwtToken)
@@ -81,7 +73,8 @@ public class AuthenticationService {
 
     }
 
-    private void revokeAllUserTokens(User user) {
+    @Transactional
+    protected void revokeAllUserTokens(User user) {
         List<Token> validUserToken = tokenRepository.findAllValidTokensByUser(user.getId());
         if (validUserToken.isEmpty()){return;}
         validUserToken.forEach(token -> {
@@ -89,5 +82,18 @@ public class AuthenticationService {
             token.setRevoke(true);
         });
         tokenRepository.saveAll(validUserToken);
+    }
+
+    private User createUser(UserDTO userDTO, Address address) {
+        return User.builder()
+                .name(userDTO.getName())
+                .lastname(userDTO.getLastname())
+                .email(userDTO.getEmail())
+                .passw(passwordEncoder.encode(userDTO.getPassword()))
+                .dateBirth(userDTO.getDateBirth())
+                .telephone(userDTO.getTelephone())
+                .role(Role.USER)
+                .address(address)
+                .build();
     }
 }
