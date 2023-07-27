@@ -14,7 +14,7 @@ public class PaymentMapper {
                 .amount(payment.getAmount())
                 .paymentMethod(payment.getPaymentMethod())
                 .date(payment.getDate())
-                .reservationDTO(ReservationMapper.buildDTO(payment.getReservation()))
+                .reservationResponseDTO(ReservationMapper.buildDTO(payment.getReservation()))
                 .build();
     }
 

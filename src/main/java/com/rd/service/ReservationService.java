@@ -1,15 +1,15 @@
 package com.rd.service;
 
-import com.rd.DTO.ReservationDTO;
-import com.rd.entity.Reservation;
+import com.rd.DTO.request.ReservationRequestDTO;
+import com.rd.DTO.response.ReservationResponseDTO;
 import java.util.List;
 
 
 public interface ReservationService {
-    ReservationDTO findById(Integer id);
-    List<ReservationDTO> findAll();
-    ReservationDTO saveReservation(Reservation reservation, Integer vehicleId, Integer userId);
-    List<ReservationDTO> findActiveReservations();
-    List<ReservationDTO> findByUserId(Integer id);
+    ReservationResponseDTO findById(Integer id);
+    List<ReservationResponseDTO> findAll();
+    ReservationResponseDTO saveReservation(ReservationRequestDTO reservation, Integer vehicleId, Integer userId);
+    List<ReservationResponseDTO> findActiveReservations();
+    List<ReservationResponseDTO> findByUserId(Integer id);
     void deleteReservation(Integer id);
 }

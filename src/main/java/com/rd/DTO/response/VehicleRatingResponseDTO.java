@@ -1,5 +1,7 @@
-package com.rd.DTO;
+package com.rd.DTO.response;
 
+import com.rd.DTO.UserDTO;
+import com.rd.DTO.VehicleDTO;
 import lombok.Builder;
 import lombok.Data;
 

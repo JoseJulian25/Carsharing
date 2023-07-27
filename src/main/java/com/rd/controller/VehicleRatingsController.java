@@ -1,7 +1,7 @@
 package com.rd.controller;
 
-import com.rd.DTO.VehicleRatingRequestDTO;
-import com.rd.DTO.VehicleRatingResponseDTO;
+import com.rd.DTO.request.VehicleRatingRequestDTO;
+import com.rd.DTO.response.VehicleRatingResponseDTO;
 import com.rd.service.impl.VehicleRatingsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package com.rd.jwt;
 
-import com.rd.DTO.AuthenticationRequest;
-import com.rd.DTO.AuthenticationResponse;
+import com.rd.DTO.request.AuthenticationRequest;
+import com.rd.DTO.response.AuthenticationResponse;
 import com.rd.DTO.UserDTO;
 import com.rd.entity.Address;
 import com.rd.enums.Role;

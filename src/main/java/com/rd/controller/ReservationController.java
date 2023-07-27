@@ -1,6 +1,7 @@
 package com.rd.controller;
 
-import com.rd.DTO.ReservationDTO;
+import com.rd.DTO.request.ReservationRequestDTO;
+import com.rd.DTO.response.ReservationResponseDTO;
 import com.rd.entity.Reservation;
 import com.rd.service.impl.ReservationServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -16,26 +17,26 @@ public class ReservationController {
     private final ReservationServiceImpl reservationService;
 
     @GetMapping
-    public ResponseEntity<ReservationDTO> findById(@RequestParam Integer id){
+    public ResponseEntity<ReservationResponseDTO> findById(@RequestParam Integer id){
         return ResponseEntity.ok(reservationService.findById(id));
     }
     @GetMapping("/all")
-    public ResponseEntity<List<ReservationDTO>> findAll(){
+    public ResponseEntity<List<ReservationResponseDTO>> findAll(){
         return ResponseEntity.ok(reservationService.findAll());
     }
 
     @GetMapping("/active")
-    public ResponseEntity<List<ReservationDTO>> findActiveReservations(){
+    public ResponseEntity<List<ReservationResponseDTO>> findActiveReservations(){
         return ResponseEntity.ok(reservationService.findActiveReservations());
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<List<ReservationDTO>> findByUserId(@PathVariable Integer id){
+    public ResponseEntity<List<ReservationResponseDTO>> findByUserId(@PathVariable Integer id){
         return ResponseEntity.ok(reservationService.findByUserId(id));
     }
 
     @PostMapping
-    public ResponseEntity<ReservationDTO> saveReservation(@RequestBody Reservation reservation, @RequestParam Integer userId, @RequestParam Integer vehicleId){
+    public ResponseEntity<ReservationResponseDTO> saveReservation(@RequestBody ReservationRequestDTO reservation, @RequestParam Integer userId, @RequestParam Integer vehicleId){
         return ResponseEntity.ok(reservationService.saveReservation(reservation, userId, vehicleId));
     }
 

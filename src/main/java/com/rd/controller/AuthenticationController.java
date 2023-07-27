@@ -1,7 +1,7 @@
 package com.rd.controller;
 
-import com.rd.DTO.AuthenticationRequest;
-import com.rd.DTO.AuthenticationResponse;
+import com.rd.DTO.request.AuthenticationRequest;
+import com.rd.DTO.response.AuthenticationResponse;
 import com.rd.DTO.UserDTO;
 import com.rd.jwt.AuthenticationService;
 import jakarta.validation.Valid;

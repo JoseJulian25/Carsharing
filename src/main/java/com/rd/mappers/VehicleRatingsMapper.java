@@ -1,7 +1,7 @@
 package com.rd.mappers;
 
-import com.rd.DTO.VehicleRatingRequestDTO;
-import com.rd.DTO.VehicleRatingResponseDTO;
+import com.rd.DTO.request.VehicleRatingRequestDTO;
+import com.rd.DTO.response.VehicleRatingResponseDTO;
 import com.rd.entity.User;
 import com.rd.entity.Vehicle;
 import com.rd.entity.VehicleRatings;

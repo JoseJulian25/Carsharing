@@ -1,6 +1,7 @@
 package com.rd.service.impl;
 
-import com.rd.DTO.ReservationDTO;
+import com.rd.DTO.request.ReservationRequestDTO;
+import com.rd.DTO.response.ReservationResponseDTO;
 import com.rd.entity.Reservation;
 import com.rd.entity.User;
 import com.rd.entity.Vehicle;
@@ -28,13 +29,13 @@ public class ReservationServiceImpl implements ReservationService {
     private final UserRepository userRepository;
 
     @Override
-    public ReservationDTO findById(Integer id) {
+    public ReservationResponseDTO findById(Integer id) {
         Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Id not found: " + id));
         return ReservationMapper.buildDTO(reservation);
     }
 
     @Override
-    public List<ReservationDTO> findAll() {
+    public List<ReservationResponseDTO> findAll() {
         List<Reservation> reservations = reservationRepository.findAll();
         ListValidation.checkNonEmptyList(reservations, () -> "Reservations not found");
         return ReservationMapper.buildListDTO(reservations);
@@ -42,7 +43,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Transactional
     @Override
-    public ReservationDTO saveReservation(Reservation reservation, Integer userId, Integer vehicleId) {
+    public ReservationResponseDTO saveReservation(ReservationRequestDTO reservation, Integer userId, Integer vehicleId) {
         Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new DataNotFoundException("vehicle not found with id: " + vehicleId));
         User user = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("user not found with id: "+ vehicleId));
 
@@ -58,12 +59,12 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<ReservationDTO> findActiveReservations() {
+    public List<ReservationResponseDTO> findActiveReservations() {
         return ReservationMapper.buildListDTO(reservationRepository.findActiveReservations());
     }
 
     @Override
-    public List<ReservationDTO> findByUserId(Integer id) {
+    public List<ReservationResponseDTO> findByUserId(Integer id) {
        userRepository.findById(id).orElseThrow(() -> new DataNotFoundException("User not found"));
        return ReservationMapper.buildListDTO(reservationRepository.findByUser_Id(id));
     }
@@ -81,7 +82,7 @@ public class ReservationServiceImpl implements ReservationService {
         reservationRepository.save(reservation);
     }
 
-    private Reservation createReservation(Reservation reservation, Vehicle vehicle, User user, double cost){
+    private Reservation createReservation(ReservationRequestDTO reservation, Vehicle vehicle, User user, double cost){
         return Reservation.builder()
                 .vehicle(vehicle)
                 .user(user)

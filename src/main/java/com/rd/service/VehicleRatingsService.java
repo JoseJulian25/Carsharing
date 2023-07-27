@@ -1,7 +1,7 @@
 package com.rd.service;
 
-import com.rd.DTO.VehicleRatingRequestDTO;
-import com.rd.DTO.VehicleRatingResponseDTO;
+import com.rd.DTO.request.VehicleRatingRequestDTO;
+import com.rd.DTO.response.VehicleRatingResponseDTO;
 
 import java.util.List;
 

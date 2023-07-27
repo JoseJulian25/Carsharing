@@ -1,5 +1,6 @@
 package com.rd.DTO;
 
+import com.rd.DTO.response.ReservationResponseDTO;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,5 +13,5 @@ public class PaymentDTO {
     private double amount;
     private Date date;
     private String paymentMethod;
-    private ReservationDTO reservationDTO;
+    private ReservationResponseDTO reservationResponseDTO;
 }

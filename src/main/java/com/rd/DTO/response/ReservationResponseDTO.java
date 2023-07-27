@@ -1,5 +1,7 @@
-package com.rd.DTO;
+package com.rd.DTO.response;
 
+import com.rd.DTO.UserDTO;
+import com.rd.DTO.VehicleDTO;
 import com.rd.enums.StatusReservation;
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Builder
 @Data
-public class ReservationDTO {
+public class ReservationResponseDTO {
     private Integer id;
     private VehicleDTO vehicle;
     private UserDTO user;
