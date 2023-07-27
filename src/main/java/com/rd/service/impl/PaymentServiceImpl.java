@@ -1,6 +1,7 @@
 package com.rd.service.impl;
 
-import com.rd.DTO.PaymentDTO;
+import com.rd.DTO.request.PaymentRequestDTO;
+import com.rd.DTO.response.PaymentResponseDTO;
 import com.rd.entity.*;
 import com.rd.enums.EStatus;
 import com.rd.enums.StatusReservation;
@@ -16,7 +17,6 @@ import com.rd.mappers.PaymentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Date;
 import java.util.List;
 
@@ -31,34 +31,31 @@ public class PaymentServiceImpl implements PaymentService {
     private final VehicleRepository vehicleRepository;
 
     @Override
-    public PaymentDTO findById(Integer id) {
+    public PaymentResponseDTO findById(Integer id) {
         Payment payment = paymentRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Payment not found"));
         return PaymentMapper.buildDTO(payment);
     }
 
     @Override
-    public List<PaymentDTO> findByUserId(Integer id) {
+    public List<PaymentResponseDTO> findByUserId(Integer id) {
         User user = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException("user not found"));
         return PaymentMapper.buildListDTO(paymentRepository.findByUser(user));
     }
 
     @Override
-    public List<PaymentDTO> findAll() {
+    public List<PaymentResponseDTO> findAll() {
         List<Payment> payments = ListValidation.checkNonEmptyList(paymentRepository.findAll(), () -> "List empty");
         return PaymentMapper.buildListDTO(payments);
     }
 
     @Transactional
     @Override
-    public PaymentDTO savePayment(Payment payment, Integer userId, Integer reservationId) {
+    public PaymentResponseDTO savePayment(PaymentRequestDTO paymentDTO, Integer userId, Integer reservationId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("user not found"));
         Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(() -> new DataNotFoundException("reservation not found"));
         reservation.setStatusReservation(StatusReservation.ACTIVE);
 
-        payment.setUser(user);
-        payment.setReservation(reservation);
-        payment.setAmount(reservation.getCost());
-        payment.setDate(new Date());
+        Payment payment = createPayment(paymentDTO, user, reservation);
 
         updateVehicleStatus(reservation.getVehicle());
         reservationRepository.save(reservation);
@@ -78,11 +75,23 @@ public class PaymentServiceImpl implements PaymentService {
         return "Payment deleted successfully";
     }
 
-    private void updateVehicleStatus(Vehicle vehicle) {
+    @Transactional
+    protected void updateVehicleStatus(Vehicle vehicle) {
         VehicleStatus vehicleStatus = vehicleServiceHelper.findOrCreateVehicleStatus(EStatus.RESERVED);
         vehicle.setStatus(vehicleStatus);
         vehicleRepository.save(vehicle);
         vehicleServiceHelper.createStatusHistory(vehicle);
         vehicleServiceHelper.deactivateLastStatus(vehicle);
     }
+
+    private Payment createPayment(PaymentRequestDTO paymentRequestDTO, User user, Reservation reservation){
+        return Payment.builder()
+                .user(user)
+                .reservation(reservation)
+                .date(new Date())
+                .amount(reservation.getCost() + 50)
+                .paymentMethod(paymentRequestDTO.getPaymentMethod())
+                .build();
+    }
+
 }

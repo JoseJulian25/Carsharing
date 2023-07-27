@@ -1,15 +1,15 @@
 package com.rd.service;
 
-import com.rd.DTO.PaymentDTO;
-import com.rd.entity.Payment;
+import com.rd.DTO.request.PaymentRequestDTO;
+import com.rd.DTO.response.PaymentResponseDTO;
 
 import java.util.List;
 
 public interface PaymentService {
 
-    PaymentDTO findById(Integer id);
-    List<PaymentDTO> findByUserId(Integer id);
-    List<PaymentDTO> findAll();
-    PaymentDTO savePayment(Payment payment, Integer userId, Integer reservationId);
+    PaymentResponseDTO findById(Integer id);
+    List<PaymentResponseDTO> findByUserId(Integer id);
+    List<PaymentResponseDTO> findAll();
+    PaymentResponseDTO savePayment(PaymentRequestDTO payment, Integer userId, Integer reservationId);
     String deletePayment(Integer id);
 }

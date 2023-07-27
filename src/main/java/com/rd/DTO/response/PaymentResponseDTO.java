@@ -1,6 +1,5 @@
-package com.rd.DTO;
+package com.rd.DTO.response;
 
-import com.rd.DTO.response.ReservationResponseDTO;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,7 +7,7 @@ import java.util.Date;
 
 @Builder
 @Data
-public class PaymentDTO {
+public class PaymentResponseDTO {
     private Integer id;
     private double amount;
     private Date date;
