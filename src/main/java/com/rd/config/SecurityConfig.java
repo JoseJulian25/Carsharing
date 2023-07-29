@@ -29,6 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/user/**").hasAuthority("USER")
                         .requestMatchers("/api/vehicle/**").hasAuthority("USER")
+                        .requestMatchers("/api/image/**").hasAuthority("USER")
                         .requestMatchers("/api/reservation/**").hasAuthority("USER").anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

@@ -49,4 +49,7 @@ public class Vehicle {
     @OneToMany(mappedBy = "vehicle")
     @JsonIgnore
     private List<VehicleRatings> vehicleRatings;
+
+    @OneToMany(mappedBy = "vehicle")
+    private List<ImageVehicle> imageVehicles;
 }
