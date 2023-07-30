@@ -48,4 +48,12 @@ public class ImageVehicleServiceImpl implements ImageVehicleService {
         List<ImageVehicle> imagesVehicles = imageVehicleRepository.findByVehicle_Id(vehicleId);
         return ImageUtils.decompressImage(imagesVehicles);
     }
+
+    @Transactional
+    @Override
+    public String deleteImage(Integer id) {
+        ImageVehicle imageVehicle = imageVehicleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Image not found"));
+        imageVehicleRepository.delete(imageVehicle);
+        return "Eliminated successful: " + imageVehicle.getName();
+    }
 }

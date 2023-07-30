@@ -9,4 +9,5 @@ import java.util.List;
 public interface ImageVehicleService {
     List<String> uploadImage(List<MultipartFile> file, Integer vehicleId) throws IOException;
     List<ImageVehicle> downloadImage(Integer vehicleId);
+    String deleteImage(Integer id);
 }

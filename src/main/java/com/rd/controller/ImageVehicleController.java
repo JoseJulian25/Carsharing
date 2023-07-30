@@ -5,8 +5,6 @@ import com.rd.service.impl.ImageVehicleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 import java.util.List;
 
 @RequestMapping("/api/image")
@@ -23,5 +21,10 @@ public class ImageVehicleController {
     @GetMapping("/vehicle/{vehicleId}")
     public List<ImageVehicle> getImages(@PathVariable Integer vehicleId){
         return imageVehicleService.downloadImage(vehicleId);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteImage(@PathVariable Integer id){
+        return imageVehicleService.deleteImage(id);
     }
 }
