@@ -7,12 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
-public class UserRegisterDTO {
+public class UserDTO {
+    private Integer id;
     private String name;
     private String lastname;
     private Date dateBirth;

@@ -1,25 +1,26 @@
-package com.rd.service;
+package com.rd.service.impl;
 
 
-import com.rd.DTO.UserRegisterDTO;
+import com.rd.DTO.UserDTO;
 import com.rd.entity.Address;
-import com.rd.entity.Role;
+import com.rd.enums.Role;
 import com.rd.entity.User;
 import com.rd.exception.DataNotFoundException;
 import com.rd.repository.AddressRepository;
 import com.rd.repository.TokenRepository;
 import com.rd.repository.UserRepository;
+import com.rd.service.UserService;
 import com.rd.token.Token;
+import com.rd.mappers.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService  {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
@@ -27,43 +28,44 @@ public class UserServiceImpl implements UserService  {
 
     @Transactional(readOnly = true)
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<UserDTO> findAll() {
+        return UserMapper.buildListDTO(userRepository.findAll());
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<User> findAllByRole(Role role) {
-        return userRepository.findByRole(role);
+    public List<UserDTO> findAllByRole(Role role) {
+        return UserMapper.buildListDTO(userRepository.findByRole(role));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<User> findAllByAddressCountry(String country) {
+    public List<UserDTO> findAllByAddressCountry(String country) {
         List<User> usersByAddressCountry = userRepository.findAllByAddress_Country(country);
 
         if(usersByAddressCountry.isEmpty())
             throw new DataNotFoundException("Country not found: " + country);
 
-        return usersByAddressCountry;
+        return UserMapper.buildListDTO(usersByAddressCountry);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<User> findAllByCountryAndCity(String country, String city) {
+    public List<UserDTO> findAllByCountryAndCity(String country, String city) {
         List<User> UsersByCountryAndCity = userRepository.findAllByAddress_CountryAndAddress_City(country, city);
 
         if(UsersByCountryAndCity.isEmpty()){
             throw new DataNotFoundException("City and Country not found: " + country + "," + city);
         }
-        return UsersByCountryAndCity;
+        return UserMapper.buildListDTO(UsersByCountryAndCity);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() ->
+    public UserDTO findByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() ->
                 new DataNotFoundException("email doesn't exist: " + email));
+        return UserMapper.buildDTO(user);
     }
 
     @Override
@@ -80,23 +82,22 @@ public class UserServiceImpl implements UserService  {
 
     @Transactional
     @Override
-    public User updateUser(UserRegisterDTO userRegisterDTO, Integer userId) {
+    public UserDTO updateUser(UserDTO userDTO, Integer userId) {
         User existingUser = userRepository.findById(userId)
                 .orElseThrow(() -> new DataNotFoundException("User not found"));
 
-        existingUser.setName(userRegisterDTO.getName());
-        existingUser.setLastname(userRegisterDTO.getLastname());
-        existingUser.setDateBirth(userRegisterDTO.getDateBirth());
-        existingUser.setEmail(userRegisterDTO.getEmail());
-        existingUser.setTelephone(userRegisterDTO.getTelephone());
+        existingUser.setName(userDTO.getName());
+        existingUser.setLastname(userDTO.getLastname());
+        existingUser.setDateBirth(userDTO.getDateBirth());
+        existingUser.setEmail(userDTO.getEmail());
+        existingUser.setTelephone(userDTO.getTelephone());
 
         Address existingAddress = existingUser.getAddress();
-        Address updatedAddress = updateOrCreateAddress(userRegisterDTO.getAddress(), existingAddress);
+        Address updatedAddress = updateOrCreateAddress(userDTO.getAddress(), existingAddress);
         existingUser.setAddress(updatedAddress);
 
-        return userRepository.save(existingUser);
+        return UserMapper.buildDTO(userRepository.save(existingUser));
     }
-
     private Address updateOrCreateAddress(Address newAddress, Address existingAddress) {
         if (existingAddress != null) {
             existingAddress.setCountry(newAddress.getCountry());
