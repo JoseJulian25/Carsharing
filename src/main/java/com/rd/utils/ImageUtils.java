@@ -28,10 +28,10 @@ public class ImageUtils {
     }
 
     public static List<byte[]> decompressImage(List<byte[]> datas){
-        Inflater inflater = new Inflater();
         List<byte[]> bytes = new ArrayList<>();
 
         datas.forEach(data -> {
+            Inflater inflater = new Inflater();
             inflater.setInput(data);
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
             byte[] tmp = new byte[4*1024];

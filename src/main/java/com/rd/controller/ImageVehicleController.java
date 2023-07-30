@@ -15,8 +15,8 @@ public class ImageVehicleController {
     private final ImageVehicleServiceImpl imageVehicleService;
 
     @PostMapping("/vehicle/{vehicleId}")
-    public String uploadImage(@RequestParam("image") MultipartFile file, @PathVariable Integer vehicleId) throws IOException {
-        return imageVehicleService.uploadImage(file, vehicleId);
+    public List<String> uploadImage(@RequestParam("image") List<MultipartFile> files, @PathVariable Integer vehicleId){
+        return imageVehicleService.uploadImage(files, vehicleId);
     }
 
     @GetMapping("/vehicle/{vehicleId}")

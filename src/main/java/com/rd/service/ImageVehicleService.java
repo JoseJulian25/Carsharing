@@ -6,6 +6,6 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ImageVehicleService {
-    String uploadImage(MultipartFile file, Integer vehicleId) throws IOException;
+    List<String> uploadImage(List<MultipartFile> file, Integer vehicleId) throws IOException;
     List<byte[]> downloadImage(Integer vehicleId);
 }
