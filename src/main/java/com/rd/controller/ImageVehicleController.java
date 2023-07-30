@@ -1,5 +1,6 @@
 package com.rd.controller;
 
+import com.rd.entity.ImageVehicle;
 import com.rd.service.impl.ImageVehicleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class ImageVehicleController {
     }
 
     @GetMapping("/vehicle/{vehicleId}")
-    public List<byte[]> getImages(@PathVariable Integer vehicleId){
+    public List<ImageVehicle> getImages(@PathVariable Integer vehicleId){
         return imageVehicleService.downloadImage(vehicleId);
     }
 }

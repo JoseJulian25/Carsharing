@@ -1,5 +1,6 @@
 package com.rd.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,5 +26,6 @@ public class ImageVehicle {
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
+    @JsonIgnore
     private Vehicle vehicle;
 }

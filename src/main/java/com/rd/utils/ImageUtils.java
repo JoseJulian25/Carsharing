@@ -1,5 +1,7 @@
 package com.rd.utils;
 
+import com.rd.entity.ImageVehicle;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +29,11 @@ public class ImageUtils {
         return outputStream.toByteArray();
     }
 
-    public static List<byte[]> decompressImage(List<byte[]> datas){
-        List<byte[]> bytes = new ArrayList<>();
-
-        datas.forEach(data -> {
+    public static List<ImageVehicle> decompressImage(List<ImageVehicle> imageVehicles){
+        imageVehicles.forEach(image -> {
             Inflater inflater = new Inflater();
-            inflater.setInput(data);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+            inflater.setInput(image.getImageData());
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream(image.getImageData().length);
             byte[] tmp = new byte[4*1024];
             try{
                 while(!inflater.finished()){
@@ -43,9 +43,8 @@ public class ImageUtils {
                 outputStream.close();
             } catch (Exception ignored){
         }
-            byte[] imageByte = outputStream.toByteArray();
-            bytes.add(imageByte);
+            image.setImageData(outputStream.toByteArray());
         });
-        return bytes;
+        return imageVehicles;
     }
 }

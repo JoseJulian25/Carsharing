@@ -44,10 +44,8 @@ public class ImageVehicleServiceImpl implements ImageVehicleService {
 
     @Transactional
     @Override
-    public List<byte[]> downloadImage(Integer vehicleId) {
+    public List<ImageVehicle> downloadImage(Integer vehicleId) {
         List<ImageVehicle> imagesVehicles = imageVehicleRepository.findByVehicle_Id(vehicleId);
-        List<byte[]> imagesByte = new ArrayList<>();
-        imagesVehicles.forEach(imageVehicle -> imagesByte.add(imageVehicle.getImageData()));
-        return ImageUtils.decompressImage(imagesByte);
+        return ImageUtils.decompressImage(imagesVehicles);
     }
 }
