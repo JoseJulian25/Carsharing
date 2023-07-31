@@ -92,7 +92,8 @@ public class AuthenticationService {
                 .passw(passwordEncoder.encode(userDTO.getPassword()))
                 .dateBirth(userDTO.getDateBirth())
                 .telephone(userDTO.getTelephone())
-                .role(Role.USER)
+                .role(userDTO.getRole())
+                .enabled(false)
                 .address(address)
                 .build();
     }

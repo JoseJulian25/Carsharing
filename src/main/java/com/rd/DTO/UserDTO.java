@@ -1,6 +1,7 @@
 package com.rd.DTO;
 
 import com.rd.entity.Address;
+import com.rd.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,4 +21,5 @@ public class UserDTO {
     private String password;
     private Address address;
     private String telephone;
+    private Role role;
 }
