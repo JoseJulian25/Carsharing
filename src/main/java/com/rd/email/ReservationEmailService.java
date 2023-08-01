@@ -13,15 +13,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ReservationEmailService {
    private final EmailService emailService;
-    @Value("${base.url}")
-    private final String baseUrl;
 
 
     public void sendEmailReservation(Reservation reservation){
         String to = reservation.getUser().getEmail();
         String subject = "The reservation is almost finished";
-        String text = "If you delivered the vehicle, please click on the next link." + baseUrl +
-                "/idUser=" + reservation.getUser().getId() + "&idVehicle=" + reservation.getVehicle().getId();
+        String text = "If you delivered the vehicle, please click on the next link. http://localhost:8080/idUser=" + reservation.getUser().getId() + "&idVehicle=" + reservation.getVehicle().getId();
 
         emailService.sendEmail(to, subject, text);
     }

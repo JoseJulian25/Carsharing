@@ -3,6 +3,7 @@ package com.rd.jwt;
 import com.rd.DTO.request.AuthenticationRequest;
 import com.rd.DTO.response.AuthenticationResponse;
 import com.rd.DTO.UserDTO;
+import com.rd.email.ConfirmationUserEmailService;
 import com.rd.entity.Address;
 import com.rd.enums.Role;
 import com.rd.entity.User;
@@ -29,6 +30,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final ConfirmationUserEmailService emailService;
 
     @Transactional
     public AuthenticationResponse register(UserDTO userDTO){
@@ -44,6 +46,7 @@ public class AuthenticationService {
         User savedUser = userRepository.save(user);
         String jwtToken = jwtService.generateToken(user);
         saveUserToken(savedUser, jwtToken);
+        emailService.sendEmailConfirmationUSer(savedUser, jwtToken);
 
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
