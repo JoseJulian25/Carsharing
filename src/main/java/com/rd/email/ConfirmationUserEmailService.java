@@ -2,7 +2,6 @@ package com.rd.email;
 
 import com.rd.entity.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service

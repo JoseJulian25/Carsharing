@@ -18,6 +18,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -99,5 +101,17 @@ public class AuthenticationService {
                 .enabled(false)
                 .address(address)
                 .build();
+    }
+
+    public String confirmUser(String token) {
+        Token tokenSaved = tokenRepository.findByToken(token).orElseThrow(() -> new IllegalStateException("token not found"));
+        User user = userRepository.findByToken(tokenSaved);
+
+        if(user.isEnabled()){
+           throw new IllegalStateException("Email already confirmed");
+        }
+
+        userRepository.enableUser(user.getEmail());
+        return "confirmed";
     }
 }
