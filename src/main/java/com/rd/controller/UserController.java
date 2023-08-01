@@ -2,8 +2,7 @@ package com.rd.controller;
 
 import com.rd.DTO.UserDTO;
 import com.rd.enums.Role;
-import com.rd.entity.User;
-import com.rd.service.impl.UserServiceImpl;
+import com.rd.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,7 @@ import java.util.List;
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     @GetMapping("/email/{email}")
     public ResponseEntity<UserDTO> findUserByEmail(@PathVariable String email){

@@ -2,8 +2,7 @@ package com.rd.controller;
 
 import com.rd.DTO.request.ReservationRequestDTO;
 import com.rd.DTO.response.ReservationResponseDTO;
-import com.rd.entity.Reservation;
-import com.rd.service.impl.ReservationServiceImpl;
+import com.rd.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class ReservationController {
-    private final ReservationServiceImpl reservationService;
+    private final ReservationService reservationService;
 
     @GetMapping
     public ResponseEntity<ReservationResponseDTO> findById(@RequestParam Integer id){
