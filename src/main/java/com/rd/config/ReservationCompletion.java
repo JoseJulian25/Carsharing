@@ -2,8 +2,7 @@ package com.rd.config;
 
 import com.rd.entity.Reservation;
 import com.rd.repository.ReservationRepository;
-import com.rd.service.MailService;
-import com.rd.service.ReservationService;
+import com.rd.email.ReservationEmailService;
 import com.rd.service.impl.ReservationServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
@@ -22,7 +21,7 @@ public class ReservationCompletion {
     private final ReservationRepository reservationRepository;
     private final ReservationServiceImpl reservationService;
     private final List<Reservation> activeReservations = new ArrayList<>();
-    private final MailService mailService;
+    private final ReservationEmailService reservationEmailService;
 
     @Async
     @Scheduled(cron = "0 */1 * * * *")
@@ -41,7 +40,7 @@ public class ReservationCompletion {
            long minutesRemaining = ChronoUnit.MINUTES.between(LocalDateTime.now(),reservation.getEndDate());
 
             if (minutesRemaining <= 120 && minutesRemaining >= 5) {
-                mailService.sendEmail(reservation);
+                reservationEmailService.sendEmailReservation(reservation);
             }else if(minutesRemaining < 0){
                 reservationService.updateCompletedReservations(reservation.getId());
                 completedReservations.add(reservation);

@@ -1,2 +1,4 @@
-package com.rd.email;public class ConfirmationUserEmailService {
+package com.rd.email;
+
+public class ConfirmationUserEmailService {
 }
