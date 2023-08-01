@@ -1,7 +1,8 @@
 package com.rd.jwt;
 
-import com.rd.repository.TokenRepository;
+
 import com.rd.token.Token;
+import com.rd.token.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

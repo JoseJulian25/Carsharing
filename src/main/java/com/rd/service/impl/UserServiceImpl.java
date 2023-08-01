@@ -7,11 +7,11 @@ import com.rd.enums.Role;
 import com.rd.entity.User;
 import com.rd.exception.DataNotFoundException;
 import com.rd.repository.AddressRepository;
-import com.rd.repository.TokenRepository;
 import com.rd.repository.UserRepository;
 import com.rd.service.UserService;
 import com.rd.token.Token;
 import com.rd.mappers.UserMapper;
+import com.rd.token.TokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,9 +73,9 @@ public class UserServiceImpl implements UserService {
             User existingUser = userRepository.findById(id).orElseThrow( () ->
                     new IllegalStateException("Usuario doesn't exist with id:" + id));
 
-        List<Token> userTokens = existingUser.getToken();
-        if (userTokens != null && !userTokens.isEmpty()) {
-            tokenRepository.deleteAll(userTokens);
+        Token userToken = existingUser.getToken();
+        if (userToken != null) {
+            tokenRepository.delete(userToken);
         }
             userRepository.deleteById(id);
     }

@@ -5,12 +5,11 @@ import com.rd.DTO.response.AuthenticationResponse;
 import com.rd.DTO.UserDTO;
 import com.rd.email.ConfirmationUserEmailService;
 import com.rd.entity.Address;
-import com.rd.enums.Role;
 import com.rd.entity.User;
 import com.rd.repository.AddressRepository;
-import com.rd.repository.TokenRepository;
 import com.rd.repository.UserRepository;
 import com.rd.token.Token;
+import com.rd.token.TokenRepository;
 import com.rd.token.TokenType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,8 +17,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -80,13 +77,8 @@ public class AuthenticationService {
 
     @Transactional
     protected void revokeAllUserTokens(User user) {
-        List<Token> validUserToken = tokenRepository.findAllValidTokensByUser(user.getId());
-        if (validUserToken.isEmpty()){return;}
-        validUserToken.forEach(token -> {
-            token.setExpired(true);
-            token.setRevoke(true);
-        });
-        tokenRepository.saveAll(validUserToken);
+        Token validUserToken = tokenRepository.findByUser_Id(user.getId()).orElseThrow(() -> new IllegalStateException("token not found"));
+        tokenRepository.delete(validUserToken);
     }
 
     private User createUser(UserDTO userDTO, Address address) {
