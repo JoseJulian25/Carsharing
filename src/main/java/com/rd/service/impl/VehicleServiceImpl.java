@@ -104,7 +104,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public VehicleDTO updateVehicle(VehicleDTO vehicleDTO, Integer id) {
         Vehicle existingVehicle = vehicleRepository.findById(id).orElseThrow(() ->
-                new DataNotFoundException("Vehicle not found with id: " + id));
+                new IllegalStateException("Vehicle not found with id: " + id));
 
         EStatus existingStatus = existingVehicle.getStatus().getStatus();
 
@@ -135,7 +135,7 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public void deleteVehicle(Integer id){
-        Vehicle existingVehicle = vehicleRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Vehicle not found with id: " + id));
+        Vehicle existingVehicle = vehicleRepository.findById(id).orElseThrow(() -> new IllegalStateException("Vehicle not found with id: " + id));
         vehicleRepository.delete(existingVehicle);
     }
 }

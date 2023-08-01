@@ -27,8 +27,8 @@ public class VehicleRatingsServiceImpl implements VehicleRatingsService {
     @Transactional
     @Override
     public VehicleRatingResponseDTO saveRating(VehicleRatingRequestDTO vehicleRatings, Integer userId, Integer vehicleId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("User not found"));
-        Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new DataNotFoundException("vehicle not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("User not found"));
+        Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new IllegalStateException("vehicle not found"));
 
         VehicleRatings vehicleRatings1 = VehicleRatingsMapper.buildObject(vehicleRatings, user, vehicle);
         return VehicleRatingsMapper.buildResponseDTO(vehicleRatingsRepository.save(vehicleRatings1));
@@ -53,7 +53,7 @@ public class VehicleRatingsServiceImpl implements VehicleRatingsService {
     @Transactional
     @Override
     public String delete(Integer id) {
-       VehicleRatings vehicleRatings = vehicleRatingsRepository.findById(id).orElseThrow(() -> new DataNotFoundException("VehicleRatings not found"));
+       VehicleRatings vehicleRatings = vehicleRatingsRepository.findById(id).orElseThrow(() -> new IllegalStateException("VehicleRatings not found"));
        vehicleRatingsRepository.delete(vehicleRatings);
        return "VehicleRating deleted";
     }

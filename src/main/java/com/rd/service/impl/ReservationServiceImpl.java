@@ -109,7 +109,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     private void validateVehicleAvailability(Vehicle vehicle){
         if(vehicle.getStatus().getStatus() == EStatus.RESERVED){
-            throw new RuntimeException("Vehicle is reserved");
+            throw new IllegalStateException("Vehicle is reserved");
         }
     }
 }

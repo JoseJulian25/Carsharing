@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUserById(Integer id) {
             User existingUser = userRepository.findById(id).orElseThrow( () ->
-                    new DataNotFoundException("Usuario doesn't exist with id:" + id));
+                    new IllegalStateException("Usuario doesn't exist with id:" + id));
 
         List<Token> userTokens = existingUser.getToken();
         if (userTokens != null && !userTokens.isEmpty()) {
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO updateUser(UserDTO userDTO, Integer userId) {
         User existingUser = userRepository.findById(userId)
-                .orElseThrow(() -> new DataNotFoundException("User not found"));
+                .orElseThrow(() -> new IllegalStateException("User not found"));
 
         existingUser.setName(userDTO.getName());
         existingUser.setLastname(userDTO.getLastname());
