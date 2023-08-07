@@ -34,6 +34,7 @@ public class Reservation {
     private StatusReservation statusReservation;
     private Double cost;
 
-    @OneToOne(mappedBy = "reservation")
+    @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
     private Payment payment;
+    private boolean emailSent;
 }
