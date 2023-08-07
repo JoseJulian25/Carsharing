@@ -34,7 +34,6 @@ public class ReservationManager {
             long minutesRemaining = ChronoUnit.MINUTES.between(LocalDateTime.now(),reservation.getEndDate());
 
             if (minutesRemaining > 0 && minutesRemaining <= 120 && !reservation.isEmailSent()) {
-                    System.out.println("Email: " + reservation.getUser().getEmail());
                     sendEmailForReservation(reservation);
                     reservation.setEmailSent(true);
             }else if(minutesRemaining <= 0){
@@ -48,6 +47,5 @@ public class ReservationManager {
     private void sendEmailForReservation(Reservation reservation){
         reservationEmailService.sendEmailReservation(reservation);
         reservationService.setReservationEmailSent(reservation.getId());
-        System.out.println("Email sent");
     }
 }
