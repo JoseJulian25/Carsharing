@@ -17,6 +17,7 @@ public class ReservationMapper {
                 .endDate(reservation.getEndDate())
                 .cost(reservation.getCost())
                 .statusReservation(reservation.getStatusReservation())
+                .emailSent(reservation.isEmailSent())
                 .build();
     }
 

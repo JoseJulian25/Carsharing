@@ -1,9 +1,7 @@
 package com.rd.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rd.enums.Role;
 import com.rd.token.Token;
 import jakarta.persistence.*;
@@ -44,6 +42,7 @@ public class User implements UserDetails {
 
     @Email
     private String email;
+    private Boolean enabled;
 
 
     @Column(name = "password")
@@ -60,9 +59,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
     @JsonIgnore
-    private List<Token> token;
+    private Token token;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
@@ -109,6 +108,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }

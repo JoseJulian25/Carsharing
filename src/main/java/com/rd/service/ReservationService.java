@@ -12,4 +12,6 @@ public interface ReservationService {
     List<ReservationResponseDTO> findActiveReservations();
     List<ReservationResponseDTO> findByUserId(Integer id);
     void deleteReservation(Integer id);
+    void updateCompletedReservation(Integer id);
+    void setReservationEmailSent(Integer id);
 }

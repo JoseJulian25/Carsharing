@@ -2,7 +2,7 @@ package com.rd.controller;
 
 import com.rd.DTO.request.VehicleRatingRequestDTO;
 import com.rd.DTO.response.VehicleRatingResponseDTO;
-import com.rd.service.impl.VehicleRatingsServiceImpl;
+import com.rd.service.VehicleRatingsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class VehicleRatingsController {
-    private final VehicleRatingsServiceImpl vehicleRatingsService;
+    private final VehicleRatingsService vehicleRatingsService;
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<VehicleRatingResponseDTO>> findByUserId(@PathVariable Integer userId){

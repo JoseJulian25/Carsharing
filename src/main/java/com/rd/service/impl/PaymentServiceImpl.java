@@ -51,8 +51,8 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     @Override
     public PaymentResponseDTO savePayment(PaymentRequestDTO paymentDTO, Integer userId, Integer reservationId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("user not found"));
-        Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(() -> new DataNotFoundException("reservation not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("user not found"));
+        Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(() -> new IllegalStateException("reservation not found"));
         reservation.setStatusReservation(StatusReservation.ACTIVE);
 
         Payment payment = createPayment(paymentDTO, user, reservation);
@@ -65,7 +65,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     @Override
     public String deletePayment(Integer id) {
-        Payment payment = paymentRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Payment not found"));
+        Payment payment = paymentRepository.findById(id).orElseThrow(() -> new IllegalStateException("Payment not found"));
         paymentRepository.delete(payment);
 
         Vehicle vehicle = payment.getReservation().getVehicle();

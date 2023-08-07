@@ -3,7 +3,7 @@ package com.rd.controller;
 import com.rd.DTO.VehicleDTO;
 import com.rd.enums.EStatus;
 import com.rd.enums.ETypeVehicle;
-import com.rd.service.impl.VehicleServiceImpl;
+import com.rd.service.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 public class VehicleController {
-    private final VehicleServiceImpl vehicleService;
+    private final VehicleService vehicleService;
 
     @GetMapping("/page")
     public ResponseEntity<Map<String, Object>> findAll(

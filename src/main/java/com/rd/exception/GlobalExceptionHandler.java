@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleIllegalException(IllegalArgumentException ex){
+    public ErrorResponse handleIllegalException(IllegalStateException ex){
         log.error("Error:", ex);
         return new ErrorResponse(ex.getMessage());
     }

@@ -3,13 +3,13 @@ package com.rd.jwt;
 import com.rd.DTO.request.AuthenticationRequest;
 import com.rd.DTO.response.AuthenticationResponse;
 import com.rd.DTO.UserDTO;
+import com.rd.email.ConfirmationUserEmailService;
 import com.rd.entity.Address;
-import com.rd.enums.Role;
 import com.rd.entity.User;
 import com.rd.repository.AddressRepository;
-import com.rd.repository.TokenRepository;
 import com.rd.repository.UserRepository;
 import com.rd.token.Token;
+import com.rd.token.TokenRepository;
 import com.rd.token.TokenType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +29,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final ConfirmationUserEmailService emailService;
 
     @Transactional
     public AuthenticationResponse register(UserDTO userDTO){
@@ -44,6 +45,7 @@ public class AuthenticationService {
         User savedUser = userRepository.save(user);
         String jwtToken = jwtService.generateToken(user);
         saveUserToken(savedUser, jwtToken);
+        emailService.sendEmailConfirmationUSer(savedUser, jwtToken);
 
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
@@ -75,13 +77,8 @@ public class AuthenticationService {
 
     @Transactional
     protected void revokeAllUserTokens(User user) {
-        List<Token> validUserToken = tokenRepository.findAllValidTokensByUser(user.getId());
-        if (validUserToken.isEmpty()){return;}
-        validUserToken.forEach(token -> {
-            token.setExpired(true);
-            token.setRevoke(true);
-        });
-        tokenRepository.saveAll(validUserToken);
+        Token validUserToken = tokenRepository.findByUser_Id(user.getId()).orElseThrow(() -> new IllegalStateException("token not found"));
+        tokenRepository.delete(validUserToken);
     }
 
     private User createUser(UserDTO userDTO, Address address) {
@@ -92,8 +89,21 @@ public class AuthenticationService {
                 .passw(passwordEncoder.encode(userDTO.getPassword()))
                 .dateBirth(userDTO.getDateBirth())
                 .telephone(userDTO.getTelephone())
-                .role(Role.USER)
+                .role(userDTO.getRole())
+                .enabled(false)
                 .address(address)
                 .build();
+    }
+
+    public String confirmUser(String token) {
+        Token tokenSaved = tokenRepository.findByToken(token).orElseThrow(() -> new IllegalStateException("token not found"));
+        User user = userRepository.findByToken(tokenSaved);
+
+        if(user.isEnabled()){
+           throw new IllegalStateException("Email already confirmed");
+        }
+
+        userRepository.enableUser(user.getEmail());
+        return "confirmed";
     }
 }

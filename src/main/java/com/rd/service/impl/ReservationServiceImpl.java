@@ -76,10 +76,20 @@ public class ReservationServiceImpl implements ReservationService {
         reservationRepository.delete(reservation);
     }
 
-    public void updateCompletedReservations(Integer reservationId){
-        Reservation reservation = reservationRepository.findById(reservationId).orElseThrow( () -> new DataNotFoundException("No"));
+    @Override
+    public void updateCompletedReservation(Integer id) {
+        Reservation reservation = reservationRepository.findById(id).orElseThrow( () -> new DataNotFoundException("Reservation not found"));
         reservation.setStatusReservation(StatusReservation.COMPLETED);
         reservationRepository.save(reservation);
+    }
+
+    @Override
+    public void setReservationEmailSent(Integer id) {
+        try{
+            reservationRepository.setReservationEmailSent(id);
+        }catch (Exception ex){
+            throw new IllegalArgumentException("Reservation not found");
+        }
     }
 
     private Reservation createReservation(ReservationRequestDTO reservation, Vehicle vehicle, User user, double cost){
@@ -91,6 +101,7 @@ public class ReservationServiceImpl implements ReservationService {
                 .endDate(reservation.getEndDate())
                 .statusReservation(StatusReservation.PENDING)
                 .cost(cost)
+                .emailSent(false)
                 .build();
     }
 
@@ -109,7 +120,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     private void validateVehicleAvailability(Vehicle vehicle){
         if(vehicle.getStatus().getStatus() == EStatus.RESERVED){
-            throw new RuntimeException("Vehicle is reserved");
+            throw new IllegalStateException("Vehicle is reserved");
         }
     }
 }

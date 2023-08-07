@@ -19,4 +19,5 @@ public class ReservationResponseDTO {
     private LocalDateTime endDate;
     private double cost;
     private StatusReservation statusReservation;
+    private boolean emailSent;
 }

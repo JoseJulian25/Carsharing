@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +27,9 @@ public class ImageVehicleServiceImpl implements ImageVehicleService {
         List<String> imageSavedSuccessful = new ArrayList<>();
 
         files.forEach(file -> {
+            if(file.getSize() > 10 * 1024 * 1024){
+                throw new IllegalStateException("Files weigh more than 10mb");
+            }
             try {
                 imageVehicleRepository.save(ImageVehicle.builder()
                         .name(file.getOriginalFilename())
@@ -36,7 +38,7 @@ public class ImageVehicleServiceImpl implements ImageVehicleService {
                         .vehicle(vehicle).build());
                 imageSavedSuccessful.add("file uploaded successfully : " + file.getOriginalFilename());
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("failed to saved images");
             }
         });
         return imageSavedSuccessful;

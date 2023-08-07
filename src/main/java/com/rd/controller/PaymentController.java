@@ -2,7 +2,7 @@ package com.rd.controller;
 
 import com.rd.DTO.request.PaymentRequestDTO;
 import com.rd.DTO.response.PaymentResponseDTO;
-import com.rd.service.impl.PaymentServiceImpl;
+import com.rd.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class PaymentController {
-    private final PaymentServiceImpl paymentService;
+    private final PaymentService paymentService;
 
     @GetMapping("/{id}")
     public ResponseEntity<PaymentResponseDTO> findById(@PathVariable Integer id){
