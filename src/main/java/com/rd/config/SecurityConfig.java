@@ -35,6 +35,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/user/**").hasAuthority("USER")
                         .requestMatchers("/api/vehicle/**").hasAuthority("USER")
                         .requestMatchers("/api/image/**").hasAuthority("USER")
+                        .requestMatchers("/api/model/**").hasAuthority("USER")
+                        .requestMatchers("/api/make/**").hasAuthority("USER")
                         .requestMatchers("/api/reservation/**").hasAuthority("USER").anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
