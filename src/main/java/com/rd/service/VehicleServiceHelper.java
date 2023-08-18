@@ -11,28 +11,10 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class VehicleServiceHelper {
-    private final MakeRepository makeRepository;
-    private final ModelRepository modelRepository;
     private final VehicleStatusRepository vehicleStatusRepository;
     private final TypeVehicleRepository typeVehicleRepository;
     private final StatusHistoryRepository statusHistoryRepository;
 
-    public Make findOrCreateMake(String makeName) {
-        return makeRepository.findByName(makeName).orElseGet(() -> {
-            Make newMake = new Make();
-            newMake.setName(makeName);
-            return makeRepository.save(newMake);
-        });
-    }
-
-    public Model findOrCreateModel(String modelName, Make make) {
-        return modelRepository.findByNameAndMake(modelName, make).orElseGet(() -> {
-            Model newModel = new Model();
-            newModel.setName(modelName);
-            newModel.setMake(make);
-            return modelRepository.save(newModel);
-        });
-    }
 
     public VehicleStatus findOrCreateVehicleStatus(EStatus status) {
         return vehicleStatusRepository.findByStatus(status).orElseGet(() -> {

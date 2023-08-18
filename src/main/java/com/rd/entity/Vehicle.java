@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Builder
-@Table(name = "vehicles")
+@Table(name = "vehicles",  uniqueConstraints = {@UniqueConstraint(columnNames = "serialNumber")})
 @Entity
 @Data
 @AllArgsConstructor
@@ -52,4 +52,11 @@ public class Vehicle {
 
     @OneToMany(mappedBy = "vehicle")
     private List<ImageVehicle> imageVehicles;
+
+    public Vehicle(Make make, Model model, VehicleStatus vehicleStatus, TypeVehicle typeVehicle) {
+        this.make = make;
+        this.model = model;
+        this.status = vehicleStatus;
+        this.type = typeVehicle;
+    }
 }
