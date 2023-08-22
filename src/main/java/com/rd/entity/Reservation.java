@@ -1,7 +1,7 @@
 package com.rd.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rd.enums.StatusReservation;
+import com.rd.entity.enums.StatusReservation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -8,16 +8,15 @@ import com.rd.entity.Address;
 import com.rd.entity.User;
 import com.rd.repository.AddressRepository;
 import com.rd.repository.UserRepository;
-import com.rd.token.Token;
-import com.rd.token.TokenRepository;
-import com.rd.token.TokenType;
+import com.rd.entity.Token;
+import com.rd.repository.TokenRepository;
+import com.rd.entity.enums.TokenType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
 
 
 @Service

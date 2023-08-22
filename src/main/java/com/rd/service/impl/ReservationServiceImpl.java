@@ -5,8 +5,8 @@ import com.rd.DTO.response.ReservationResponseDTO;
 import com.rd.entity.Reservation;
 import com.rd.entity.User;
 import com.rd.entity.Vehicle;
-import com.rd.enums.EStatus;
-import com.rd.enums.StatusReservation;
+import com.rd.entity.enums.StatusVehicle;
+import com.rd.entity.enums.StatusReservation;
 import com.rd.exception.DataNotFoundException;
 import com.rd.repository.ReservationRepository;
 import com.rd.repository.UserRepository;
@@ -119,7 +119,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     private void validateVehicleAvailability(Vehicle vehicle){
-        if(vehicle.getStatus().getStatus() == EStatus.RESERVED){
+        if(vehicle.getStatus().getStatus() == StatusVehicle.RESERVED){
             throw new IllegalStateException("Vehicle is reserved");
         }
     }

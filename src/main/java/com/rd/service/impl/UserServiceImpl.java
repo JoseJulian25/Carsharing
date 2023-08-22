@@ -3,15 +3,15 @@ package com.rd.service.impl;
 
 import com.rd.DTO.UserDTO;
 import com.rd.entity.Address;
-import com.rd.enums.Role;
+import com.rd.entity.enums.Role;
 import com.rd.entity.User;
 import com.rd.exception.DataNotFoundException;
 import com.rd.repository.AddressRepository;
 import com.rd.repository.UserRepository;
 import com.rd.service.UserService;
-import com.rd.token.Token;
+import com.rd.entity.Token;
 import com.rd.mappers.UserMapper;
-import com.rd.token.TokenRepository;
+import com.rd.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

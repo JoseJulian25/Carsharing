@@ -1,6 +1,6 @@
 package com.rd.jwt;
 
-import com.rd.token.TokenRepository;
+import com.rd.repository.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

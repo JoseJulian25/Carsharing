@@ -1,21 +1,19 @@
 package com.rd.controller;
 
 import com.rd.DTO.VehicleDTO;
-import com.rd.enums.EStatus;
-import com.rd.enums.ETypeVehicle;
+import com.rd.entity.enums.StatusVehicle;
+import com.rd.entity.enums.TypeVehicle;
 import com.rd.service.VehicleService;
 import com.rd.utils.ResponseUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +45,7 @@ public class VehicleController {
     @Operation(summary = "Find vehicles by Status", description = "Requires roles: USER, ADMIN")
     @Secured({"USER", "ADMIN"})
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<VehicleDTO>> findByStatus(@PathVariable EStatus status){
+    public ResponseEntity<List<VehicleDTO>> findByStatus(@PathVariable StatusVehicle status){
         return ResponseEntity.ok(vehicleService.findByStatus(status));
     }
 
@@ -61,14 +59,14 @@ public class VehicleController {
     @Operation(summary = "Find vehicles by color and Type", description = "Requires roles: USER, ADMIN")
     @Secured({"USER", "ADMIN"})
     @GetMapping("/color/{color}/type/{type}")
-    public ResponseEntity<List<VehicleDTO>> findByColorAndType(@PathVariable String color, @PathVariable ETypeVehicle type){
+    public ResponseEntity<List<VehicleDTO>> findByColorAndType(@PathVariable String color, @PathVariable TypeVehicle type){
         return ResponseEntity.ok(vehicleService.findByColorAndType(color, type));
     }
 
     @Operation(summary = "Find vehicles by color, type and make", description = "Requires roles: USER, ADMIN")
     @Secured({"USER", "ADMIN"})
     @GetMapping("/color/{color}/type/{type}/make/{make}")
-    public ResponseEntity<List<VehicleDTO>> findByMakeColorAndType(@PathVariable String color, @PathVariable ETypeVehicle type, @PathVariable String make){
+    public ResponseEntity<List<VehicleDTO>> findByMakeColorAndType(@PathVariable String color, @PathVariable TypeVehicle type, @PathVariable String make){
         return ResponseEntity.ok(vehicleService.findByColorTypeAndMake(color, type, make));
     }
 
@@ -82,7 +80,7 @@ public class VehicleController {
     @Operation(summary = "Find vehicles by type", description = "Requires roles: USER, ADMIN")
     @Secured({"USER", "ADMIN"})
     @GetMapping("/type/{type}")
-    public ResponseEntity<List<VehicleDTO>> findByType(@PathVariable ETypeVehicle type){
+    public ResponseEntity<List<VehicleDTO>> findByType(@PathVariable TypeVehicle type){
         return ResponseEntity.ok(vehicleService.findByType(type));
     }
 

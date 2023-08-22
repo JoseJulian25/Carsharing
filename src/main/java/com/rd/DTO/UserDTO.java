@@ -1,7 +1,7 @@
 package com.rd.DTO;
 
 import com.rd.entity.Address;
-import com.rd.enums.Role;
+import com.rd.entity.enums.Role;
 import lombok.Builder;
 import lombok.Data;
 import java.util.Date;

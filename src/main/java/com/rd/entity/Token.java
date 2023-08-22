@@ -1,6 +1,6 @@
-package com.rd.token;
+package com.rd.entity;
 
-import com.rd.entity.User;
+import com.rd.entity.enums.TokenType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

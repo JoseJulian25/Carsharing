@@ -2,8 +2,8 @@ package com.rd.service.impl;
 
 import com.rd.DTO.VehicleDTO;
 import com.rd.entity.*;
-import com.rd.enums.EStatus;
-import com.rd.enums.ETypeVehicle;
+import com.rd.entity.enums.StatusVehicle;
+import com.rd.entity.enums.TypeVehicle;
 import com.rd.exception.DataNotFoundException;
 import com.rd.repository.*;
 import com.rd.service.VehicleService;
@@ -41,7 +41,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public List<VehicleDTO> findByStatus(EStatus status) {
+    public List<VehicleDTO> findByStatus(StatusVehicle status) {
         List<Vehicle> vehicles = vehicleRepository.findByStatus_Status(status);
         ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found with status: " + status);
         return VehicleMapper.buildListDTO(vehicles);
@@ -55,14 +55,14 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public List<VehicleDTO> findByColorAndType(String color, ETypeVehicle typeVehicle) {
+    public List<VehicleDTO> findByColorAndType(String color, TypeVehicle typeVehicle) {
         List<Vehicle> vehicles = vehicleRepository.findByColorAndType_Type(color, typeVehicle);
         ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found with color and type: " + color + ", " + typeVehicle );
         return VehicleMapper.buildListDTO(vehicles);
     }
 
     @Override
-    public List<VehicleDTO> findByColorTypeAndMake(String color, ETypeVehicle typeVehicle,String make) {
+    public List<VehicleDTO> findByColorTypeAndMake(String color, TypeVehicle typeVehicle, String make) {
         List<Vehicle> vehicles = vehicleRepository.findAllByMake_NameAndColorAndType_Type(make, color, typeVehicle);
         ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found wih make: " + make + ", color: " + color + " and type: "+ typeVehicle);
         return VehicleMapper.buildListDTO(vehicles);
@@ -76,7 +76,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public List<VehicleDTO> findByType(ETypeVehicle typeVehicle) {
+    public List<VehicleDTO> findByType(TypeVehicle typeVehicle) {
         List<Vehicle> vehicles = vehicleRepository.findAllByType_Type(typeVehicle);
         ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found with type: " + typeVehicle);
         return VehicleMapper.buildListDTO(vehicles);
@@ -107,7 +107,7 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle existingVehicle = vehicleRepository.findById(id).orElseThrow(() ->
                 new IllegalStateException("Vehicle not found with id: " + id));
 
-        EStatus existingStatus = existingVehicle.getStatus().getStatus();
+        StatusVehicle existingStatus = existingVehicle.getStatus().getStatus();
 
         Vehicle validatedVehicle = validateAndBuildVehicle(vehicleDTO);
 
@@ -121,7 +121,7 @@ public class VehicleServiceImpl implements VehicleService {
         return VehicleMapper.buildDTO(vehicleRepository.save(existingVehicle));
     }
 
-    private static void updateVehicleFields(VehicleDTO vehicleDTO, Vehicle existingVehicle, Make make, Model model, VehicleStatus vehicleStatus, TypeVehicle typeVehicle) {
+    private static void updateVehicleFields(VehicleDTO vehicleDTO, Vehicle existingVehicle, Make make, Model model, VehicleStatus vehicleStatus, com.rd.entity.TypeVehicle typeVehicle) {
         existingVehicle.setSerialNumber(vehicleDTO.getSerialNumber());
         existingVehicle.setMake(make);
         existingVehicle.setModel(model);
@@ -143,7 +143,7 @@ public class VehicleServiceImpl implements VehicleService {
         Make make = makeRepository.findByName(vehicleDTO.getMakeName()).orElseThrow(() -> new IllegalStateException("Make not found"));
         Model model = modelRepository.findByNameAndMake(vehicleDTO.getModelName(), make).orElseThrow(() -> new IllegalStateException("Model not found"));
         VehicleStatus vehicleStatus = vehicleServiceHelper.findOrCreateVehicleStatus(vehicleDTO.getStatus());
-        TypeVehicle typeVehicle = vehicleServiceHelper.findOrCreateTypeVehicle(vehicleDTO.getType());
+        com.rd.entity.TypeVehicle typeVehicle = vehicleServiceHelper.findOrCreateTypeVehicle(vehicleDTO.getType());
         
         return new Vehicle(make, model, vehicleStatus, typeVehicle);
     }

@@ -1,7 +1,6 @@
 package com.rd.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rd.enums.ETypeVehicle;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,7 +15,7 @@ public class TypeVehicle {
     private Integer id;
 
     @Enumerated(EnumType.STRING)
-    private ETypeVehicle type;
+    private com.rd.entity.enums.TypeVehicle type;
 
     @OneToMany(mappedBy = "type")
     @JsonIgnore

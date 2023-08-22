@@ -1,7 +1,7 @@
 package com.rd.DTO;
 
-import com.rd.enums.EStatus;
-import com.rd.enums.ETypeVehicle;
+import com.rd.entity.enums.StatusVehicle;
+import com.rd.entity.enums.TypeVehicle;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,9 +12,9 @@ public class VehicleDTO {
     private String serialNumber;
     private String makeName;
     private String modelName;
-    private ETypeVehicle type;
+    private TypeVehicle type;
     private double price;
     private String color;
-    private EStatus status;
+    private StatusVehicle status;
     private String additionalNotes;
 }

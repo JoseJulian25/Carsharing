@@ -1,7 +1,7 @@
 package com.rd.controller;
 
 import com.rd.DTO.UserDTO;
-import com.rd.enums.Role;
+import com.rd.entity.enums.Role;
 import com.rd.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
