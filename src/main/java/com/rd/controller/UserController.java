@@ -44,14 +44,14 @@ public class UserController {
     @Secured("ADMIN")
     @GetMapping("/country/{country}")
     public ResponseEntity<List<UserDTO>> findAllByCountry(@PathVariable String country){
-        return new ResponseEntity<>(userService.findAllByAddressCountry(country), HttpStatus.FOUND);
+        return ResponseEntity.ok(userService.findAllByAddressCountry(country));
     }
 
     @Operation(summary = "Find users by country and City", description = "Requires rol: ADMIN")
     @Secured("ADMIN")
     @GetMapping("/country/{country}/city/{city}")
     public ResponseEntity<List<UserDTO>> findAllByCountryAndCity(@PathVariable String country, @PathVariable String city){
-        return new ResponseEntity<>(userService.findAllByCountryAndCity(country, city), HttpStatus.FOUND);
+        return ResponseEntity.ok(userService.findAllByCountryAndCity(country, city));
     }
 
     @Operation(summary = "Update user", description = "Requires roles: USER, ADMIN")

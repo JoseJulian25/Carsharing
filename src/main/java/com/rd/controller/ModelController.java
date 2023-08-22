@@ -22,14 +22,14 @@ public class ModelController {
     @Secured({"USER", "ADMIN"})
     @GetMapping("/{id}")
     public ResponseEntity<ModelDTO> findById(@PathVariable Integer id){
-        return new ResponseEntity<>(modelService.findById(id), HttpStatus.FOUND);
+        return ResponseEntity.ok(modelService.findById(id));
     }
 
     @Operation(summary = "Find all models", description = "Requires roles: USER, ADMIN")
     @Secured({"USER", "ADMIN"})
     @GetMapping
     public ResponseEntity<List<ModelDTO>> findAll(){
-        return new ResponseEntity<>(modelService.findAll(), HttpStatus.FOUND);
+        return ResponseEntity.ok(modelService.findAll());
     }
 
     @Operation(summary = "save model", description = "Requires rol: ADMIN")

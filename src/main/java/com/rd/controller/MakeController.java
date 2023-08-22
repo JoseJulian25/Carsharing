@@ -23,14 +23,14 @@ public class MakeController {
     @Secured({"USER", "ADMIN"})
     @GetMapping("/{id}")
     public ResponseEntity<MakeDTO> findById(@PathVariable Integer id){
-        return new ResponseEntity<>(makeService.findById(id), HttpStatus.FOUND);
+        return ResponseEntity.ok(makeService.findById(id));
     }
 
     @Operation(summary = "Find all makes", description = "Requires roles: USER, ADMIN")
     @Secured({"USER", "ADMIN"})
     @GetMapping()
     public ResponseEntity<List<MakeDTO>> findAll(){
-        return new ResponseEntity<>(makeService.findAll(), HttpStatus.FOUND);
+        return ResponseEntity.ok(makeService.findAll());
     }
 
     @Operation(summary = "Save make", description = "Requires roles: ADMIN")
