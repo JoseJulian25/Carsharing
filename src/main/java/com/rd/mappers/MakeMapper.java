@@ -16,9 +16,7 @@ public class MakeMapper {
     }
 
     public static List<MakeDTO> buildListDTO(List<Make> makes){
-        List<MakeDTO> makeDTOS = new ArrayList<>();
-        makes.forEach(payment -> makeDTOS.add(buildDTO(payment)));
-        return makeDTOS;
+        return makes.stream().map(MakeMapper::buildDTO).toList();
     }
 
     public static Make buildObject(MakeDTO makeDTO){

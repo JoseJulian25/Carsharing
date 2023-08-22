@@ -6,7 +6,6 @@ import com.rd.entity.User;
 import com.rd.entity.Vehicle;
 import com.rd.entity.VehicleRatings;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class VehicleRatingsMapper {
@@ -20,7 +19,7 @@ public class VehicleRatingsMapper {
                 .build();
     }
 
-    public static VehicleRatingResponseDTO buildResponseDTO(VehicleRatings vehicleRatings){
+    public static VehicleRatingResponseDTO buildDTO(VehicleRatings vehicleRatings){
         return VehicleRatingResponseDTO.builder()
                 .id(vehicleRatings.getId())
                 .vehicle(VehicleMapper.buildDTO(vehicleRatings.getVehicle()))
@@ -31,8 +30,6 @@ public class VehicleRatingsMapper {
     }
 
     public static List<VehicleRatingResponseDTO> buildListVehicleRatingResponse(List<VehicleRatings> vehicleRatings){
-        List<VehicleRatingResponseDTO> vehicleRatingResponseDTOS = new ArrayList<>();
-        vehicleRatings.forEach(vehicleDTO -> vehicleRatingResponseDTOS.add(buildResponseDTO(vehicleDTO)));
-        return vehicleRatingResponseDTOS;
+        return vehicleRatings.stream().map(VehicleRatingsMapper::buildDTO).toList();
     }
 }

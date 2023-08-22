@@ -24,9 +24,7 @@ public class VehicleMapper {
     }
 
     public static List<VehicleDTO> buildListDTO(List<Vehicle> vehicles){
-        List<VehicleDTO> vehicleDTOS = new ArrayList<>();
-         vehicles.forEach(vehicleDTO -> vehicleDTOS.add(buildDTO(vehicleDTO)));
-        return vehicleDTOS;
+        return vehicles.stream().map(VehicleMapper::buildDTO).toList();
     }
 
     public static Page<VehicleDTO> buildPageDTO(Page<Vehicle> vehicles){

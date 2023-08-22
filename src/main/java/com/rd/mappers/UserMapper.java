@@ -22,8 +22,6 @@ public class UserMapper {
     }
 
     public static List<UserDTO> buildListDTO(List<User> users){
-        List<UserDTO> reservationDTOS = new ArrayList<>();
-        users.forEach(reservation -> reservationDTOS.add(buildDTO(reservation)));
-        return reservationDTOS;
+        return users.stream().map(UserMapper::buildDTO).toList();
     }
 }

@@ -18,8 +18,6 @@ public class PaymentMapper {
     }
 
     public static List<PaymentResponseDTO> buildListDTO(List<Payment> payments){
-        List<PaymentResponseDTO> paymentResponseDTOS = new ArrayList<>();
-        payments.forEach(payment -> paymentResponseDTOS.add(buildDTO(payment)));
-        return paymentResponseDTOS;
+        return payments.stream().map(PaymentMapper::buildDTO).toList();
     }
 }
