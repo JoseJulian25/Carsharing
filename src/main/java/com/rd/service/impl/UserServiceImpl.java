@@ -98,6 +98,13 @@ public class UserServiceImpl implements UserService {
 
         return UserMapper.buildDTO(userRepository.save(existingUser));
     }
+
+    @Override
+    public UserDTO findById(Integer id) {
+       User user = userRepository.findById(id).orElseThrow(() -> new DataNotFoundException("User not found"));
+       return UserMapper.buildDTO(user);
+    }
+
     private Address updateOrCreateAddress(Address newAddress, Address existingAddress) {
         if (existingAddress != null) {
             existingAddress.setCountry(newAddress.getCountry());
