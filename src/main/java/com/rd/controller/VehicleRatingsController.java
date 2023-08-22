@@ -5,6 +5,7 @@ import com.rd.DTO.response.VehicleRatingResponseDTO;
 import com.rd.service.VehicleRatingsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,21 +16,25 @@ import java.util.List;
 public class VehicleRatingsController {
     private final VehicleRatingsService vehicleRatingsService;
 
+    @Secured({"USER", "ADMIN"})
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<VehicleRatingResponseDTO>> findByUserId(@PathVariable Integer userId){
         return ResponseEntity.ok(vehicleRatingsService.findByUser(userId));
     }
 
+    @Secured({"USER", "ADMIN"})
     @GetMapping("/vehicle/{vehicleId}")
     public ResponseEntity<List<VehicleRatingResponseDTO>> findByVehicleId(@PathVariable Integer vehicleId){
         return ResponseEntity.ok(vehicleRatingsService.findByVehicle(vehicleId));
     }
 
+    @Secured({"USER", "ADMIN"})
     @PostMapping()
     public ResponseEntity<VehicleRatingResponseDTO> saveRating(@RequestBody VehicleRatingRequestDTO vehicleRatingRequestDTO, @RequestParam Integer userId, @RequestParam Integer vehicleId){
         return ResponseEntity.ok(vehicleRatingsService.saveRating(vehicleRatingRequestDTO, userId, vehicleId));
     }
 
+    @Secured({"USER", "ADMIN"})
     @DeleteMapping
     public ResponseEntity<String> deleteRating(@RequestParam Integer id){
         return ResponseEntity.ok(vehicleRatingsService.delete(id));

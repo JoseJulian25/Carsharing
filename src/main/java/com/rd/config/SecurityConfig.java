@@ -6,6 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -15,6 +19,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
+import java.lang.annotation.Annotation;
+
+@EnableMethodSecurity(jsr250Enabled = true, securedEnabled = true)
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -32,12 +39,7 @@ public class SecurityConfig {
                                 "v3/api-docs.yaml",
                                 "/swagger-ui/**",
                                 "swagger-ui.html").permitAll()
-                        .requestMatchers("/api/user/**").hasAuthority("USER")
-                        .requestMatchers("/api/vehicle/**").hasAuthority("USER")
-                        .requestMatchers("/api/image/**").hasAuthority("USER")
-                        .requestMatchers("/api/model/**").hasAuthority("USER")
-                        .requestMatchers("/api/make/**").hasAuthority("USER")
-                        .requestMatchers("/api/reservation/**").hasAuthority("USER").anyRequest().authenticated())
+                        .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
