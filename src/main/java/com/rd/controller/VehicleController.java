@@ -4,6 +4,7 @@ import com.rd.DTO.VehicleDTO;
 import com.rd.enums.EStatus;
 import com.rd.enums.ETypeVehicle;
 import com.rd.service.VehicleService;
+import com.rd.utils.ResponseUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
@@ -33,12 +34,7 @@ public class VehicleController {
     public ResponseEntity<Map<String, Object>> findAll(
             @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
        Page<VehicleDTO> pageVehicle = vehicleService.findAllPage(page, size);
-        Map<String, Object> response = new HashMap<>();
-        response.put("vehicles", pageVehicle.getContent());
-        response.put("currentPage", pageVehicle.getNumber());
-        response.put("totalItems", pageVehicle.getTotalElements());
-        response.put("totalPages", pageVehicle.getTotalPages());
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(ResponseUtils.createPageResponse(pageVehicle, "vehicles"));
     }
 
     @Operation(summary = "Find all vehicles", description = "Requires roles: USER, ADMIN")
