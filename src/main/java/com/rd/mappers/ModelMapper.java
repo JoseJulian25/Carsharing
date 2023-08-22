@@ -1,30 +1,28 @@
 package com.rd.mappers;
 
-import com.rd.DTO.request.ModelDTO;
+import com.rd.DTO.request.ModelRequestDTO;
+import com.rd.DTO.response.ModelResponseDTO;
 import com.rd.entity.Make;
 import com.rd.entity.Model;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class ModelMapper {
 
-    public static ModelDTO buildDTO(Model model){
-        return ModelDTO.builder()
+    public static ModelResponseDTO buildDTO(Model model){
+        return ModelResponseDTO.builder()
                 .id(model.getId())
                 .name(model.getName())
+                .make(MakeMapper.buildDTO(model.getMake()))
                 .build();
     }
 
-    public static List<ModelDTO> buildListDTO(List<Model> models){
-        List<ModelDTO> modelDTOS = new ArrayList<>();
-        models.forEach(payment -> modelDTOS.add(buildDTO(payment)));
-        return modelDTOS;
+    public static List<ModelResponseDTO> buildListDTO(List<Model> models){
+        return models.stream().map(ModelMapper::buildDTO).toList();
     }
 
-    public static Model buildObject(ModelDTO modelDTO, Make make){
+    public static Model buildObject(ModelRequestDTO modelRequestDTO, Make make){
         return Model.builder()
-                .name(modelDTO.getName())
+                .name(modelRequestDTO.getName())
                 .make(make)
                 .build();
     }

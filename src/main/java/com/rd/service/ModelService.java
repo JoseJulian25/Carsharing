@@ -1,13 +1,15 @@
 package com.rd.service;
 
-import com.rd.DTO.request.ModelDTO;
+import com.rd.DTO.request.ModelRequestDTO;
+import com.rd.DTO.response.ModelResponseDTO;
 
 import java.util.List;
 
 public interface ModelService {
-    ModelDTO findById(Integer id);
-    ModelDTO save(ModelDTO modelDTO, Integer makeId);
+    ModelResponseDTO findById(Integer id);
+    ModelResponseDTO save(ModelRequestDTO modelRequestDTO, Integer makeId);
     String delete(Integer id);
-    ModelDTO updateModel(ModelDTO modelDTO, Integer id);
-    List<ModelDTO> findAll();
+    ModelResponseDTO updateModel(ModelRequestDTO modelRequestDTO, Integer id);
+    List<ModelResponseDTO> findAll();
+    List<ModelResponseDTO> findByMakeId(Integer makeId);
 }
