@@ -18,14 +18,16 @@ public class ReservationManager {
     private final ReservationService reservationService;
     private final List<Reservation> activeReservations = new ArrayList<>();
     private final ReservationEmailService reservationEmailService;
+    private final String EVERY_HOUR = "0 0 * * * *";
+    private final String EVERY_TEN_MINUTES = "0 */10 * * * *";
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = EVERY_HOUR)
     public void refreshActiveReservations() {
         activeReservations.clear();
         activeReservations.addAll(reservationRepository.findActiveReservations());
     }
 
-    @Scheduled(cron = "0 */15 * * * *")
+    @Scheduled(cron = EVERY_TEN_MINUTES)
     public void processCompletedReservation() {
         List<Reservation> completedReservations = new ArrayList<>();
 
