@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
     private final AuthenticationService authService;
 
-    @Operation(summary = "User register")
+    @Operation(summary = "User register", description = "Once the registration is finished, an email is sent to confirm the user")
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody UserDTO request) {
         return new ResponseEntity<>(authService.register(request), HttpStatus.CREATED);
@@ -33,7 +33,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(authService.authenticate(request));
     }
 
-    @Operation(summary = "User confirm email", description = "This endpoint is used by user when they check their emails and confirm the registration")
+    @Operation(summary = "User confirm email", description = "This endpoint is used by users when they check their emails and confirm the registration")
     @GetMapping("/registration/confirm")
     public String confirmUser(@RequestParam("token") String token){
         return authService.confirmUser(token);
