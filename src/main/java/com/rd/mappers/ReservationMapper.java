@@ -22,9 +22,7 @@ public class ReservationMapper {
     }
 
     public static List<ReservationResponseDTO> buildListDTO(List<Reservation> reservations){
-        List<ReservationResponseDTO> reservationResponseDTOS = new ArrayList<>();
-        reservations.forEach(reservation -> reservationResponseDTOS.add(buildDTO(reservation)));
-        return reservationResponseDTOS;
+        return reservations.stream().map(ReservationMapper::buildDTO).toList();
     }
 
 }

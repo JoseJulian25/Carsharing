@@ -2,8 +2,8 @@ package com.rd.service;
 
 
 import com.rd.DTO.UserDTO;
-import com.rd.enums.Role;
-import com.rd.entity.User;
+import com.rd.entity.enums.Role;
+
 import java.util.List;
 
 public interface UserService {
@@ -14,4 +14,5 @@ public interface UserService {
     UserDTO findByEmail(String email);
     void deleteUserById(Integer id);
     UserDTO updateUser(UserDTO user, Integer id);
+    UserDTO findById(Integer id);
 }

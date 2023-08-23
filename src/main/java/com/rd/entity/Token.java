@@ -1,6 +1,6 @@
-package com.rd.token;
+package com.rd.entity;
 
-import com.rd.entity.User;
+import com.rd.entity.enums.TokenType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +25,6 @@ public class Token {
     private boolean revoke;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }

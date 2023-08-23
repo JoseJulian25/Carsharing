@@ -1,7 +1,7 @@
 package com.rd.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rd.enums.EStatus;
+import com.rd.entity.enums.StatusVehicle;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
@@ -14,7 +14,7 @@ public class VehicleStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Enumerated(EnumType.STRING)
-    private EStatus status;
+    private StatusVehicle status;
 
     @OneToMany(mappedBy = "status")
     @JsonIgnore

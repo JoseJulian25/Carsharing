@@ -1,3 +1,3 @@
-package com.rd.enums;
+package com.rd.entity.enums;
 
 public enum ETypeVehicle {CAR, MOTORCYCLE, JEEP}

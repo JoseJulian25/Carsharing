@@ -31,7 +31,7 @@ public class VehicleRatingsServiceImpl implements VehicleRatingsService {
         Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new IllegalStateException("vehicle not found"));
 
         VehicleRatings vehicleRatings1 = VehicleRatingsMapper.buildObject(vehicleRatings, user, vehicle);
-        return VehicleRatingsMapper.buildResponseDTO(vehicleRatingsRepository.save(vehicleRatings1));
+        return VehicleRatingsMapper.buildDTO(vehicleRatingsRepository.save(vehicleRatings1));
     }
 
     @Override

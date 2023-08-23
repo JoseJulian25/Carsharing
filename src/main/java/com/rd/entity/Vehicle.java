@@ -1,6 +1,5 @@
 package com.rd.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Builder
-@Table(name = "vehicles")
+@Table(name = "vehicles",  uniqueConstraints = {@UniqueConstraint(columnNames = "serialNumber")})
 @Entity
 @Data
 @AllArgsConstructor
@@ -21,22 +20,22 @@ public class Vehicle {
     private String serialNumber;
 
     @ManyToOne()
-    @JoinColumn(name = "make_id", referencedColumnName = "id")
+    @JoinColumn(name = "make_id", referencedColumnName = "id", nullable = false)
     private Make make;
 
     @ManyToOne
-    @JoinColumn(name = "model_id", referencedColumnName = "id")
+    @JoinColumn(name = "model_id", referencedColumnName = "id", nullable = false)
     private Model model;
 
     @ManyToOne
-    @JoinColumn(name = "type_vehicle_id", referencedColumnName = "id")
+    @JoinColumn(name = "type_vehicle_id", referencedColumnName = "id", nullable = false)
     private TypeVehicle type;
 
     private String color;
     private Double price;
 
     @ManyToOne
-    @JoinColumn(name = "vehicle_status_id", referencedColumnName = "id")
+    @JoinColumn(name = "vehicle_status_id", referencedColumnName = "id", nullable = false)
     private VehicleStatus status;
     private String additionalNotes;
 
@@ -47,9 +46,15 @@ public class Vehicle {
     private List<Reservation> reservations;
 
     @OneToMany(mappedBy = "vehicle")
-    @JsonIgnore
     private List<VehicleRatings> vehicleRatings;
 
     @OneToMany(mappedBy = "vehicle")
     private List<ImageVehicle> imageVehicles;
+
+    public Vehicle(Make make, Model model, VehicleStatus vehicleStatus, TypeVehicle typeVehicle) {
+        this.make = make;
+        this.model = model;
+        this.status = vehicleStatus;
+        this.type = typeVehicle;
+    }
 }

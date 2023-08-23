@@ -2,8 +2,7 @@ package com.rd.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rd.enums.Role;
-import com.rd.token.Token;
+import com.rd.entity.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -29,52 +28,36 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @NotNull
     private String name;
-
-    @NotNull
     private String lastname;
 
-    @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dateBirth;
-
-    @Email
     private String email;
     private Boolean enabled;
-
 
     @Column(name = "password")
     private String passw;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
     private Address address;
-
-    @Pattern(regexp = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$")
     private String telephone;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
-    @JsonIgnore
     private Token token;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
     private List<Reservation> reservations;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
     private List<VehicleRatings> vehicleRatings;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
     private List<Payment> payments;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

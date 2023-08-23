@@ -1,8 +1,8 @@
 package com.rd.service;
 
 import com.rd.entity.*;
-import com.rd.enums.EStatus;
-import com.rd.enums.ETypeVehicle;
+import com.rd.entity.enums.StatusVehicle;
+import com.rd.entity.enums.ETypeVehicle;
 import com.rd.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,30 +11,12 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class VehicleServiceHelper {
-    private final MakeRepository makeRepository;
-    private final ModelRepository modelRepository;
     private final VehicleStatusRepository vehicleStatusRepository;
     private final TypeVehicleRepository typeVehicleRepository;
     private final StatusHistoryRepository statusHistoryRepository;
 
-    public Make findOrCreateMake(String makeName) {
-        return makeRepository.findByName(makeName).orElseGet(() -> {
-            Make newMake = new Make();
-            newMake.setName(makeName);
-            return makeRepository.save(newMake);
-        });
-    }
 
-    public Model findOrCreateModel(String modelName, Make make) {
-        return modelRepository.findByNameAndMake(modelName, make).orElseGet(() -> {
-            Model newModel = new Model();
-            newModel.setName(modelName);
-            newModel.setMake(make);
-            return modelRepository.save(newModel);
-        });
-    }
-
-    public VehicleStatus findOrCreateVehicleStatus(EStatus status) {
+    public VehicleStatus findOrCreateVehicleStatus(StatusVehicle status) {
         return vehicleStatusRepository.findByStatus(status).orElseGet(() -> {
             VehicleStatus newVehicleStatus = new VehicleStatus();
             newVehicleStatus.setStatus(status);
@@ -42,9 +24,9 @@ public class VehicleServiceHelper {
         });
     }
 
-    public TypeVehicle findOrCreateTypeVehicle(ETypeVehicle type) {
+    public com.rd.entity.TypeVehicle findOrCreateTypeVehicle(ETypeVehicle type) {
         return typeVehicleRepository.findByType(type).orElseGet(() -> {
-            TypeVehicle newTypeVehicle = new TypeVehicle();
+            com.rd.entity.TypeVehicle newTypeVehicle = new com.rd.entity.TypeVehicle();
             newTypeVehicle.setType(type);
             return typeVehicleRepository.save(newTypeVehicle);
         });

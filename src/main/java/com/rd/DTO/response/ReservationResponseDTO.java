@@ -2,7 +2,7 @@ package com.rd.DTO.response;
 
 import com.rd.DTO.UserDTO;
 import com.rd.DTO.VehicleDTO;
-import com.rd.enums.StatusReservation;
+import com.rd.entity.enums.StatusReservation;
 import lombok.Builder;
 import lombok.Data;
 import java.time.LocalDateTime;

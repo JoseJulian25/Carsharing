@@ -3,8 +3,8 @@ package com.rd.service.impl;
 import com.rd.DTO.request.PaymentRequestDTO;
 import com.rd.DTO.response.PaymentResponseDTO;
 import com.rd.entity.*;
-import com.rd.enums.EStatus;
-import com.rd.enums.StatusReservation;
+import com.rd.entity.enums.StatusVehicle;
+import com.rd.entity.enums.StatusReservation;
 import com.rd.exception.DataNotFoundException;
 import com.rd.repository.PaymentRepository;
 import com.rd.repository.ReservationRepository;
@@ -69,7 +69,7 @@ public class PaymentServiceImpl implements PaymentService {
         paymentRepository.delete(payment);
 
         Vehicle vehicle = payment.getReservation().getVehicle();
-        VehicleStatus vehicleStatus = vehicleServiceHelper.findOrCreateVehicleStatus(EStatus.AVAILABLE);
+        VehicleStatus vehicleStatus = vehicleServiceHelper.findOrCreateVehicleStatus(StatusVehicle.AVAILABLE);
         vehicle.setStatus(vehicleStatus);
         vehicleRepository.save(vehicle);
         return "Payment deleted successfully";
@@ -77,7 +77,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Transactional
     protected void updateVehicleStatus(Vehicle vehicle) {
-        VehicleStatus vehicleStatus = vehicleServiceHelper.findOrCreateVehicleStatus(EStatus.RESERVED);
+        VehicleStatus vehicleStatus = vehicleServiceHelper.findOrCreateVehicleStatus(StatusVehicle.RESERVED);
         vehicle.setStatus(vehicleStatus);
         vehicleRepository.save(vehicle);
         vehicleServiceHelper.createStatusHistory(vehicle);

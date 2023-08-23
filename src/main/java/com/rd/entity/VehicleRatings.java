@@ -1,6 +1,5 @@
 package com.rd.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,12 +17,12 @@ public class VehicleRatings {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id", referencedColumnName = "id", nullable = false)
     private Vehicle vehicle;
 
     @ManyToOne()
-    @JoinColumn(name = "user_id",referencedColumnName = "id" )
+    @JoinColumn(name = "user_id",referencedColumnName = "id",nullable = false)
     private User user;
     private Long rating;
     private String comment;

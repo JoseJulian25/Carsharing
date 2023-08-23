@@ -1,4 +1,4 @@
-package com.rd.token;
+package com.rd.entity.enums;
 
 public enum TokenType { BEARER
 }
