@@ -5,12 +5,15 @@ import com.rd.DTO.response.ModelResponseDTO;
 import com.rd.service.ModelService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+@Validated
 @Tag(name = "Model Controller", description = "Endpoints for managing models of vehicles")
 @RequiredArgsConstructor
 @RestController
@@ -42,14 +45,14 @@ public class ModelController {
     @Operation(summary = "save model", description = "Requires rol: ADMIN")
     @Secured("ADMIN")
     @PostMapping("/make/{makeId}")
-    public ResponseEntity<ModelResponseDTO> saveModel(@RequestBody ModelRequestDTO modelRequestDTO, @PathVariable Integer makeId){
+    public ResponseEntity<ModelResponseDTO> saveModel(@RequestBody @Valid ModelRequestDTO modelRequestDTO, @PathVariable Integer makeId){
         return ResponseEntity.ok(modelService.save(modelRequestDTO, makeId));
     }
 
     @Operation(summary = "update model", description = "Requires rol: ADMIN")
     @Secured("ADMIN")
     @PutMapping
-    public ResponseEntity<ModelResponseDTO> updateModel(@RequestBody ModelRequestDTO modelRequestDTO, @RequestParam Integer id){
+    public ResponseEntity<ModelResponseDTO> updateModel(@RequestBody @Valid ModelRequestDTO modelRequestDTO, @RequestParam Integer id){
         return ResponseEntity.ok(modelService.updateModel(modelRequestDTO, id));
     }
 

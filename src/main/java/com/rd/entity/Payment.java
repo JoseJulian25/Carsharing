@@ -22,10 +22,10 @@ public class Payment {
     private String paymentMethod;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
     @OneToOne
-    @JoinColumn(name = "reservation_id", referencedColumnName = "id")
+    @JoinColumn(name = "reservation_id", referencedColumnName = "id", nullable = false)
     private Reservation reservation;
 }

@@ -5,13 +5,16 @@ import com.rd.DTO.response.VehicleRatingResponseDTO;
 import com.rd.service.VehicleRatingsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @Tag(name = "Rating's vehicles Controller", description = "Endpoints to manage ratings of vehicles")
 @RequestMapping("api/rating")
 @RestController
@@ -36,7 +39,7 @@ public class VehicleRatingsController {
     @Operation(summary = "Save rating", description = "Requires roles: USER, ADMIN")
     @Secured({"USER", "ADMIN"})
     @PostMapping()
-    public ResponseEntity<VehicleRatingResponseDTO> saveRating(@RequestBody VehicleRatingRequestDTO vehicleRatingRequestDTO, @RequestParam Integer userId, @RequestParam Integer vehicleId){
+    public ResponseEntity<VehicleRatingResponseDTO> saveRating(@RequestBody @Valid VehicleRatingRequestDTO vehicleRatingRequestDTO, @RequestParam Integer userId, @RequestParam Integer vehicleId){
         return ResponseEntity.ok(vehicleRatingsService.saveRating(vehicleRatingRequestDTO, userId, vehicleId));
     }
 

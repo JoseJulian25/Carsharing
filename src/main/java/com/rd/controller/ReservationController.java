@@ -5,6 +5,7 @@ import com.rd.DTO.response.ReservationResponseDTO;
 import com.rd.service.ReservationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -52,7 +53,7 @@ public class ReservationController {
     @Operation(summary = "Save reservation", description = "Requires roles: USER, ADMIN")
     @Secured({"USER", "ADMIN"})
     @PostMapping
-    public ResponseEntity<ReservationResponseDTO> saveReservation(@RequestBody ReservationRequestDTO reservation, @RequestParam Integer userId, @RequestParam Integer vehicleId){
+    public ResponseEntity<ReservationResponseDTO> saveReservation(@RequestBody @Valid ReservationRequestDTO reservation, @RequestParam Integer userId, @RequestParam Integer vehicleId){
         return ResponseEntity.ok(reservationService.saveReservation(reservation, userId, vehicleId));
     }
 

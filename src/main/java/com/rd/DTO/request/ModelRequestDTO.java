@@ -1,5 +1,6 @@
 package com.rd.DTO.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,5 +8,6 @@ import lombok.Data;
 @Data
 public class ModelRequestDTO {
     private Integer id;
+    @NotBlank(message = "name can't be empty or null")
     private String name;
 }

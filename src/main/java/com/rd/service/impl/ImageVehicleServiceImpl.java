@@ -23,7 +23,7 @@ public class ImageVehicleServiceImpl implements ImageVehicleService {
     @Transactional
     @Override
     public List<String> uploadImage(List<MultipartFile> files, Integer vehicleId){
-        Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new IllegalArgumentException("vehicle not found exception"));
+        Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new IllegalStateException("vehicle not found"));
         List<String> imageSavedSuccessful = new ArrayList<>();
 
         files.forEach(file -> {

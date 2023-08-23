@@ -1,8 +1,6 @@
 package com.rd.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,13 +21,9 @@ public class Make {
     private Integer id;
 
     @OneToMany(mappedBy = "make", cascade = CascadeType.ALL)
-    @JsonIgnore
     private Set<Model> modelId;
-
-    @NotNull
     private String name;
 
     @OneToMany(mappedBy = "make", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<Vehicle> vehicle;
 }

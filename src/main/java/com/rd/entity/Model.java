@@ -26,6 +26,6 @@ public class Model {
     private List<Vehicle> vehicle;
 
     @ManyToOne
-    @JoinColumn(name = "make_id", referencedColumnName = "id")
+    @JoinColumn(name = "make_id", referencedColumnName = "id", nullable = false)
     private Make make;
 }

@@ -1,5 +1,7 @@
 package com.rd.DTO.request;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthenticationRequest {
+    @Email(message = "Email invalid")
     private String email;
+    @NotBlank(message = "Country can't be empty or null")
     private String password;
 }

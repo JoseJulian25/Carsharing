@@ -2,7 +2,7 @@ package com.rd.service;
 
 import com.rd.entity.*;
 import com.rd.entity.enums.StatusVehicle;
-import com.rd.entity.enums.TypeVehicle;
+import com.rd.entity.enums.ETypeVehicle;
 import com.rd.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class VehicleServiceHelper {
         });
     }
 
-    public com.rd.entity.TypeVehicle findOrCreateTypeVehicle(TypeVehicle type) {
+    public com.rd.entity.TypeVehicle findOrCreateTypeVehicle(ETypeVehicle type) {
         return typeVehicleRepository.findByType(type).orElseGet(() -> {
             com.rd.entity.TypeVehicle newTypeVehicle = new com.rd.entity.TypeVehicle();
             newTypeVehicle.setType(type);

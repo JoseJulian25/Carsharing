@@ -2,6 +2,7 @@ package com.rd.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,13 +21,9 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
     private String country;
-    @NotNull
     private String city;
-    @NotNull
     private String street;
-    @NotNull
     private String postalCode;
 
     @OneToMany(mappedBy = "address")

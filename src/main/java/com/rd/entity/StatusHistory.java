@@ -19,11 +19,11 @@ public class StatusHistory {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
+    @JoinColumn(name = "vehicle_id", referencedColumnName = "id", nullable = false)
     private Vehicle vehicle;
 
     @ManyToOne
-    @JoinColumn(name = "vehicle_status_id", referencedColumnName = "id")
+    @JoinColumn(name = "vehicle_status_id", referencedColumnName = "id", nullable = false)
     private VehicleStatus vehicleStatus;
     private LocalDateTime updateDate;
     private boolean active;

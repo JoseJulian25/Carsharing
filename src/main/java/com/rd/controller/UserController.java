@@ -5,13 +5,16 @@ import com.rd.entity.enums.Role;
 import com.rd.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+@Validated
 @Tag(name = "User Controller", description = "Endpoints to manage Users")
 @RestController
 @RequestMapping("/api/user")
@@ -57,7 +60,7 @@ public class UserController {
     @Operation(summary = "Update user", description = "Requires roles: USER, ADMIN")
     @Secured({"USER", "ADMIN"})
     @PutMapping()
-    public ResponseEntity<UserDTO> updateUser(@RequestParam Integer id,@RequestBody UserDTO user){
+    public ResponseEntity<UserDTO> updateUser(@RequestParam Integer id, @RequestBody @Valid UserDTO user){
         return new ResponseEntity<>(userService.updateUser(user, id), HttpStatus.OK);
     }
 

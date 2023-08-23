@@ -1,6 +1,5 @@
 package com.rd.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rd.entity.enums.StatusReservation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,17 +18,18 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @ManyToOne
-    @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
+    @JoinColumn(name = "vehicle_id", referencedColumnName = "id", nullable = false)
     private Vehicle vehicle;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonIgnore
     private User user;
     private LocalDateTime reservationDate;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+
     @Enumerated(EnumType.STRING)
     private StatusReservation statusReservation;
     private Double cost;

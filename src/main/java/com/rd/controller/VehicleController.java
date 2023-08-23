@@ -2,11 +2,12 @@ package com.rd.controller;
 
 import com.rd.DTO.VehicleDTO;
 import com.rd.entity.enums.StatusVehicle;
-import com.rd.entity.enums.TypeVehicle;
+import com.rd.entity.enums.ETypeVehicle;
 import com.rd.service.VehicleService;
 import com.rd.utils.ResponseUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -59,14 +60,14 @@ public class VehicleController {
     @Operation(summary = "Find vehicles by color and Type", description = "Requires roles: USER, ADMIN")
     @Secured({"USER", "ADMIN"})
     @GetMapping("/color/{color}/type/{type}")
-    public ResponseEntity<List<VehicleDTO>> findByColorAndType(@PathVariable String color, @PathVariable TypeVehicle type){
+    public ResponseEntity<List<VehicleDTO>> findByColorAndType(@PathVariable String color, @PathVariable ETypeVehicle type){
         return ResponseEntity.ok(vehicleService.findByColorAndType(color, type));
     }
 
     @Operation(summary = "Find vehicles by color, type and make", description = "Requires roles: USER, ADMIN")
     @Secured({"USER", "ADMIN"})
     @GetMapping("/color/{color}/type/{type}/make/{make}")
-    public ResponseEntity<List<VehicleDTO>> findByMakeColorAndType(@PathVariable String color, @PathVariable TypeVehicle type, @PathVariable String make){
+    public ResponseEntity<List<VehicleDTO>> findByMakeColorAndType(@PathVariable String color, @PathVariable ETypeVehicle type, @PathVariable String make){
         return ResponseEntity.ok(vehicleService.findByColorTypeAndMake(color, type, make));
     }
 
@@ -80,7 +81,7 @@ public class VehicleController {
     @Operation(summary = "Find vehicles by type", description = "Requires roles: USER, ADMIN")
     @Secured({"USER", "ADMIN"})
     @GetMapping("/type/{type}")
-    public ResponseEntity<List<VehicleDTO>> findByType(@PathVariable TypeVehicle type){
+    public ResponseEntity<List<VehicleDTO>> findByType(@PathVariable ETypeVehicle type){
         return ResponseEntity.ok(vehicleService.findByType(type));
     }
 
@@ -101,7 +102,7 @@ public class VehicleController {
     @Operation(summary = "update vehicle", description = "Requires rol: ADMIN")
     @Secured("ADMIN")
     @PutMapping
-    public ResponseEntity<VehicleDTO> updateVehicle(@RequestBody VehicleDTO vehicle, @RequestParam Integer id){
+    public ResponseEntity<VehicleDTO> updateVehicle(@RequestBody @Valid VehicleDTO vehicle, @RequestParam Integer id){
         return ResponseEntity.ok(vehicleService.updateVehicle(vehicle, id));
     }
 

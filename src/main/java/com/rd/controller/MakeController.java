@@ -4,14 +4,17 @@ import com.rd.DTO.request.MakeDTO;
 import com.rd.service.MakeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @Tag(name= "Make Controller", description = "Endpoints for managing Makes of vehicles")
 @RequiredArgsConstructor
 @RestController
@@ -36,7 +39,7 @@ public class MakeController {
     @Operation(summary = "Save make", description = "Requires roles: ADMIN")
     @Secured("ADMIN")
     @PostMapping
-    public ResponseEntity<MakeDTO> saveMake(@RequestBody MakeDTO makeDTO){
+    public ResponseEntity<MakeDTO> saveMake(@RequestBody @Valid MakeDTO makeDTO){
         return new ResponseEntity<>(makeService.save(makeDTO), HttpStatus.CREATED);
     }
 
@@ -50,7 +53,7 @@ public class MakeController {
     @Operation(summary = "update make", description = "Requires rol: ADMIN")
     @Secured("ADMIN")
     @PutMapping
-    public ResponseEntity<MakeDTO> updateMake(@RequestBody MakeDTO makeDTO, @RequestParam Integer id){
+    public ResponseEntity<MakeDTO> updateMake(@RequestBody @Valid MakeDTO makeDTO, @RequestParam Integer id){
         return ResponseEntity.ok(makeService.updateMake(makeDTO, id));
     }
 }

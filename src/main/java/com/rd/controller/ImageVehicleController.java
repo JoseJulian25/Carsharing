@@ -5,13 +5,19 @@ import com.rd.service.ImageVehicleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +35,10 @@ public class ImageVehicleController {
             description = "The images need to be .img, .png, .jpeg <br> Requires role: ADMIN")
     @Secured("ADMIN")
     @PostMapping("/vehicle/{vehicleId}")
-    public ResponseEntity<List<String>> uploadImage(@RequestParam("image") List<MultipartFile> files, @PathVariable Integer vehicleId) throws IOException {
+    public ResponseEntity<List<String>> uploadImage(@RequestBody(required = true,
+            content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
+                    schema = @Schema(implementation = MultipartFile.class))) List<MultipartFile> files,
+                                                    @PathVariable Integer vehicleId) throws IOException {
         return ResponseEntity.ok(imageVehicleService.uploadImage(files, vehicleId));
     }
 

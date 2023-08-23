@@ -5,13 +5,16 @@ import com.rd.DTO.response.PaymentResponseDTO;
 import com.rd.service.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @Tag(name = "Payment Controller", description = "Endpoints to managing payments of reservations")
 @RequestMapping("api/payment")
 @RestController
@@ -43,7 +46,7 @@ public class PaymentController {
     @Operation(summary = "Save payment", description = "Requires roles: USER, ADMIN")
     @Secured({"USER", "ADMIN"})
     @PostMapping
-    public ResponseEntity<PaymentResponseDTO> savePayment(@RequestBody PaymentRequestDTO payment, @RequestParam Integer userId, @RequestParam Integer reservationId){
+    public ResponseEntity<PaymentResponseDTO> savePayment(@RequestBody @Valid PaymentRequestDTO payment, @RequestParam Integer userId, @RequestParam Integer reservationId){
         return ResponseEntity.ok(paymentService.savePayment(payment, userId, reservationId));
     }
 

@@ -3,7 +3,7 @@ package com.rd.service.impl;
 import com.rd.DTO.VehicleDTO;
 import com.rd.entity.*;
 import com.rd.entity.enums.StatusVehicle;
-import com.rd.entity.enums.TypeVehicle;
+import com.rd.entity.enums.ETypeVehicle;
 import com.rd.exception.DataNotFoundException;
 import com.rd.repository.*;
 import com.rd.service.VehicleService;
@@ -55,16 +55,16 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public List<VehicleDTO> findByColorAndType(String color, TypeVehicle typeVehicle) {
-        List<Vehicle> vehicles = vehicleRepository.findByColorAndType_Type(color, typeVehicle);
-        ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found with color and type: " + color + ", " + typeVehicle );
+    public List<VehicleDTO> findByColorAndType(String color, ETypeVehicle ETypeVehicle) {
+        List<Vehicle> vehicles = vehicleRepository.findByColorAndType_Type(color, ETypeVehicle);
+        ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found with color and type: " + color + ", " + ETypeVehicle);
         return VehicleMapper.buildListDTO(vehicles);
     }
 
     @Override
-    public List<VehicleDTO> findByColorTypeAndMake(String color, TypeVehicle typeVehicle, String make) {
-        List<Vehicle> vehicles = vehicleRepository.findAllByMake_NameAndColorAndType_Type(make, color, typeVehicle);
-        ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found wih make: " + make + ", color: " + color + " and type: "+ typeVehicle);
+    public List<VehicleDTO> findByColorTypeAndMake(String color, ETypeVehicle ETypeVehicle, String make) {
+        List<Vehicle> vehicles = vehicleRepository.findAllByMake_NameAndColorAndType_Type(make, color, ETypeVehicle);
+        ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found wih make: " + make + ", color: " + color + " and type: "+ ETypeVehicle);
         return VehicleMapper.buildListDTO(vehicles);
     }
 
@@ -76,9 +76,9 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public List<VehicleDTO> findByType(TypeVehicle typeVehicle) {
-        List<Vehicle> vehicles = vehicleRepository.findAllByType_Type(typeVehicle);
-        ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found with type: " + typeVehicle);
+    public List<VehicleDTO> findByType(ETypeVehicle ETypeVehicle) {
+        List<Vehicle> vehicles = vehicleRepository.findAllByType_Type(ETypeVehicle);
+        ListValidation.checkNonEmptyList(vehicles, () -> "Vehicle not found with type: " + ETypeVehicle);
         return VehicleMapper.buildListDTO(vehicles);
     }
 
