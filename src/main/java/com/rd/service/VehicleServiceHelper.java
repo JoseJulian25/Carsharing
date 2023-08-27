@@ -6,6 +6,8 @@ import com.rd.entity.enums.ETypeVehicle;
 import com.rd.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 
 @Service
@@ -15,7 +17,7 @@ public class VehicleServiceHelper {
     private final TypeVehicleRepository typeVehicleRepository;
     private final StatusHistoryRepository statusHistoryRepository;
 
-
+    @Transactional
     public VehicleStatus findOrCreateVehicleStatus(StatusVehicle status) {
         return vehicleStatusRepository.findByStatus(status).orElseGet(() -> {
             VehicleStatus newVehicleStatus = new VehicleStatus();
@@ -24,14 +26,16 @@ public class VehicleServiceHelper {
         });
     }
 
+    @Transactional
     public com.rd.entity.TypeVehicle findOrCreateTypeVehicle(ETypeVehicle type) {
         return typeVehicleRepository.findByType(type).orElseGet(() -> {
-            com.rd.entity.TypeVehicle newTypeVehicle = new com.rd.entity.TypeVehicle();
+            TypeVehicle newTypeVehicle = new TypeVehicle();
             newTypeVehicle.setType(type);
             return typeVehicleRepository.save(newTypeVehicle);
         });
     }
 
+    @Transactional
     public void createStatusHistory(Vehicle vehicle){
         statusHistoryRepository.save(StatusHistory.builder()
                         .vehicle(vehicle)
@@ -41,6 +45,7 @@ public class VehicleServiceHelper {
                 .build());
     }
 
+    @Transactional
     public void deactivateLastStatus(Vehicle vehicle){
         StatusHistory lastActiveHistory = statusHistoryRepository.findTopByVehicleAndActiveOrderByUpdateDateDesc(vehicle, true);
         if(lastActiveHistory != null){

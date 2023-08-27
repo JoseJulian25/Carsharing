@@ -97,8 +97,9 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle vehicle = VehicleMapper.buildVehicleObject(vehicleDTO, validatedVehicle.getMake(),
                 validatedVehicle.getModel(), validatedVehicle.getStatus(), validatedVehicle.getType());
 
+        Vehicle savedVehicle = vehicleRepository.save(vehicle);
         vehicleServiceHelper.createStatusHistory(vehicle);
-        return VehicleMapper.buildDTO(vehicleRepository.save(vehicle));
+        return VehicleMapper.buildDTO(savedVehicle);
     }
 
     @Transactional
@@ -143,7 +144,7 @@ public class VehicleServiceImpl implements VehicleService {
         Make make = makeRepository.findByName(vehicleDTO.getMakeName()).orElseThrow(() -> new IllegalStateException("Make not found"));
         Model model = modelRepository.findByNameAndMake(vehicleDTO.getModelName(), make).orElseThrow(() -> new IllegalStateException("Model not found"));
         VehicleStatus vehicleStatus = vehicleServiceHelper.findOrCreateVehicleStatus(vehicleDTO.getStatus());
-        com.rd.entity.TypeVehicle typeVehicle = vehicleServiceHelper.findOrCreateTypeVehicle(vehicleDTO.getType());
+        TypeVehicle typeVehicle = vehicleServiceHelper.findOrCreateTypeVehicle(vehicleDTO.getType());
         
         return new Vehicle(make, model, vehicleStatus, typeVehicle);
     }
