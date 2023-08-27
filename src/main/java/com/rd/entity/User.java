@@ -1,12 +1,7 @@
 package com.rd.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rd.entity.enums.Role;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,8 +9,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Builder
@@ -30,9 +25,7 @@ public class User implements UserDetails {
     private Integer id;
     private String name;
     private String lastname;
-
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date dateBirth;
+    private LocalDate dateBirth;
     private String email;
     private Boolean enabled;
 

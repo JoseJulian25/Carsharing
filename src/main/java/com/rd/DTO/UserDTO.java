@@ -2,12 +2,12 @@ package com.rd.DTO;
 
 import com.rd.entity.Address;
 import com.rd.entity.enums.Role;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import com.rd.validation.ValidAge;
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Data;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -19,8 +19,8 @@ public class UserDTO {
     private String name;
     @NotBlank(message = "lastname can't be empty or null")
     private String lastname;
-    @NotNull(message = "dateBirth can't be null")
-    private Date dateBirth;
+    @ValidAge
+    private LocalDate dateBirth;
     @Email(message = "Email invalid")
     private String email;
     @NotBlank(message = "password can't be empty or null")

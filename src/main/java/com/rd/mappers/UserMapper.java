@@ -2,7 +2,6 @@ package com.rd.mappers;
 
 import com.rd.DTO.UserDTO;
 import com.rd.entity.User;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserMapper {
