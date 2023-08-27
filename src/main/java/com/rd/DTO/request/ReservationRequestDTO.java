@@ -1,15 +1,17 @@
 package com.rd.DTO.request;
 
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.FutureOrPresent;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 
 @Builder
 @Data
 public class ReservationRequestDTO {
-    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}", message = "The Date's format must be 'yyyy-MM-ddTHH:mm:ss'")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @FutureOrPresent
     private LocalDateTime startDate;
-    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}", message = "The Date's format must be 'yyyy-MM-ddTHH:mm:ss'")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime endDate;
 }

@@ -44,19 +44,19 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional
     @Override
     public ReservationResponseDTO saveReservation(ReservationRequestDTO reservation, Integer userId, Integer vehicleId) {
+        ValidateReservationDuration(reservation);
+
         Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new DataNotFoundException("vehicle not found with id: " + vehicleId));
         User user = userRepository.findById(userId).orElseThrow(() -> new DataNotFoundException("user not found with id: "+ vehicleId));
 
         validateVehicleAvailability(vehicle);
 
-        long days = calculateDays(reservation.getStartDate(), reservation.getEndDate());
-        double cost = calculateCost(days, vehicle.getPrice());
-
+        double cost = calculateCostReservation(reservation, vehicle);
         Reservation savedReservation = createReservation(reservation, vehicle, user, cost);
-        vehicleRepository.save(vehicle);
 
         return ReservationMapper.buildDTO(reservationRepository.save(savedReservation));
     }
+
 
     @Override
     public List<ReservationResponseDTO> findActiveReservations() {
@@ -92,6 +92,13 @@ public class ReservationServiceImpl implements ReservationService {
         }
     }
 
+    private void ValidateReservationDuration(ReservationRequestDTO reservation) {
+        long differenceTime = Duration.between(reservation.getStartDate(), reservation.getEndDate()).toDays();
+        if(differenceTime < 1){
+            throw new IllegalStateException("End date must be at least one day");
+        }
+    }
+
     private Reservation createReservation(ReservationRequestDTO reservation, Vehicle vehicle, User user, double cost){
         return Reservation.builder()
                 .vehicle(vehicle)
@@ -105,22 +112,20 @@ public class ReservationServiceImpl implements ReservationService {
                 .build();
     }
 
-    private long calculateDays(LocalDateTime startDay, LocalDateTime endDay){
-        return Duration.between(startDay, endDay).toDays();
-    }
+    private double calculateCostReservation(ReservationRequestDTO reservation, Vehicle vehicle){
+        long daysReservation = Duration.between(reservation.getStartDate(), reservation.getEndDate()).toDays();
+        double amountReservation = vehicle.getPrice();
 
-    private double calculateCost(long days, double priceVehicle){
-        double cost = priceVehicle;
-        while(days > 0){
-            cost += 1000;
-            days--;
+        while(daysReservation > 0){
+            amountReservation += 1000;
+            daysReservation--;
         }
-        return cost;
+        return amountReservation;
     }
 
     private void validateVehicleAvailability(Vehicle vehicle){
-        if(vehicle.getStatus().getStatus() == StatusVehicle.RESERVED){
-            throw new IllegalStateException("Vehicle is reserved");
+        if(vehicle.getStatus().getStatus() != StatusVehicle.AVAILABLE){
+            throw new IllegalStateException("Vehicle is not available");
         }
     }
 }
