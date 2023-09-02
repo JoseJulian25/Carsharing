@@ -27,6 +27,9 @@ Provides functions like:
 
 ## ⚠ IMPORTANT:
 #### Before run the application, you must go to ```src/main/resources/application.properties``` and make this changes:
+
+As you know, we are using PostgreSQL, so first, you have to create the database and name it "carsharing". Postgres defaults values are as they appear in the file, so you won't have to modify those properties. If you have a different password, username or port, you will need modify them.
+
 **Environment variables:**
 - EMAIL_MAIL: Here you need to put your email which will send to users confirm the registration and notifications about the reservation.
 
