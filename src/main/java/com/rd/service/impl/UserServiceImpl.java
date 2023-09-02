@@ -92,9 +92,8 @@ public class UserServiceImpl implements UserService {
         existingUser.setEmail(userDTO.getEmail());
         existingUser.setTelephone(userDTO.getTelephone());
 
-        Address existingAddress = existingUser.getAddress();
-        Address updatedAddress = updateOrCreateAddress(userDTO.getAddress(), existingAddress);
-        existingUser.setAddress(updatedAddress);
+        Address address = validateAddress(userDTO.getAddress());
+        existingUser.setAddress(address);
 
         return UserMapper.buildDTO(userRepository.save(existingUser));
     }
@@ -105,15 +104,11 @@ public class UserServiceImpl implements UserService {
        return UserMapper.buildDTO(user);
     }
 
-    private Address updateOrCreateAddress(Address newAddress, Address existingAddress) {
-        if (existingAddress != null) {
-            existingAddress.setCountry(newAddress.getCountry());
-            existingAddress.setCity(newAddress.getCity());
-            existingAddress.setStreet(newAddress.getStreet());
-            existingAddress.setPostalCode(newAddress.getPostalCode());
-            return existingAddress;
-        } else {
-            return addressRepository.save(newAddress);
-        }
+    @Transactional
+    protected Address validateAddress(Address newAddress) {
+        return addressRepository.findByCountryCityStreetAndPostalCode(newAddress.getCountry(),
+                newAddress.getCity(),
+                newAddress.getStreet(),
+                newAddress.getPostalCode()).orElseGet(() -> addressRepository.save(newAddress));
     }
 }
